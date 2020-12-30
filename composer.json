@@ -1,0 +1,39 @@
+{
+    "name": "laravel/analytics",
+    "description": "Analytics for the Laravel framework.",
+    "keywords": ["laravel", "analytics"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andreas Elia",
+            "email": "contact@andreaselia.co.uk"
+        },
+        {
+            "name": "Tom Irons",
+            "email": "tom@irons.pw"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "laravel/framework": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laravel\\Analytics\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Laravel\\Analytics\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laravel\\Analytics\\AnalyticsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
