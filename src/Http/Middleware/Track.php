@@ -20,11 +20,13 @@ class Track
             'controller_action' => optional($request->route())->getActionName(),
             'headers' => $request->headers->all(),
             'payload' => $this->input($request),
-            'session' => $this->sessionVariables($request),
+            'session' => $request->hasSession() ? $request->session()->all() : [],
             'response_status' => $response->getStatusCode(),
             'duration' => $startTime ? floor((microtime(true) - $startTime) * 1000) : null,
             'memory' => round(memory_get_peak_usage(true) / 1024 / 1024, 1),
         ];
+
+        // PageView::create($data);
 
         dd($data);
 
@@ -45,10 +47,5 @@ class Track
         });
 
         return array_replace_recursive($request->input(), $files);
-    }
-
-    private function sessionVariables(Request $request): array
-    {
-        return $request->hasSession() ? $request->session()->all() : [];
     }
 }
