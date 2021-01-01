@@ -1,7 +1,14 @@
 <?php
 
+use Laravel\Analytics\Http\Middleware\Track;
+
 return [
 
-    'middleware' => [],
+    'prefix' => 'analytics',
+
+    'middleware' => [
+        'web',
+        Track::class,
+    ],
 
 ];
