@@ -11,10 +11,30 @@ class HomeController extends Controller
     {
         return view('analytics::dashboard', [
             'stats' => [
-                ['key' => 'Unique Users', 'value' => '51,900', 'increase' => true],
-                ['key' => 'Page Views', 'value' => '157,000', 'increase' => false],
-                ['key' => 'Bounce Rate', 'value' => '60%', 'increase' => true],
-                ['key' => 'Average Visit', 'value' => '1m 23s', 'increase' => false],
+                [
+                    'key' => 'Unique Users',
+                    'value' => '51,900',
+                    'increase' => true,
+                    'percentage' => 13,
+                ],
+                [
+                    'key' => 'Page Views',
+                    'value' => '157,000',
+                    'increase' => false,
+                    'percentage' => 7,
+                ],
+                [
+                    'key' => 'Bounce Rate',
+                    'value' => '60%',
+                    'increase' => true,
+                    'percentage' => 15,
+                ],
+                [
+                    'key' => 'Average Visit',
+                    'value' => '1m 23s',
+                    'increase' => false,
+                    'percentage' => 3,
+                ],
             ],
             'pages' => [
                 ['page' => '/', 'users' => '25.8k'],

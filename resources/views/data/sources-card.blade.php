@@ -12,7 +12,7 @@
                 <div class="pr-5 text-sm leading-5 text-gray-800 truncate">
                     <div class="flex items-center">
                         <img class="w-4 h-4 mr-3" src="{{ $source['icon'] }}" alt="{{ $source['page'] }}" />
-                        <a href="{{ $source['page'] }}" title="{{ $source['page'] }}" target="_blank" class="hover:underline">
+                        <a href="{{ $source['page'] }}" target="_blank" class="hover:underline">
                             {{ $source['page'] }}
                         </a>
                     </div>
