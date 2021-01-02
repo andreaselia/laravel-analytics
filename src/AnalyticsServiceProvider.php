@@ -22,7 +22,7 @@ class AnalyticsServiceProvider extends ServiceProvider
         }
 
         // Migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Middleware
         Route::middlewareGroup('analytics', [

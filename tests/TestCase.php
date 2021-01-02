@@ -20,6 +20,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        //
+        include_once __DIR__.'/../database/migrations/2020_01_01_100000_create_page_views_table.php';
+
+        (new \CreatePageViewsTable)->up();
     }
 }

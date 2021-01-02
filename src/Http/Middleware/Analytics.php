@@ -18,18 +18,20 @@ class Analytics
             return $response;
         }
 
-        PageView::create($data = [
-            'ip_address' => $request->ip(),
-            'uri' => $uri,
-            'source' => 'todo',
-            'country_code' => 'todo',
-            'device_type' => 'todo',
-            'method' => $request->method(),
-            'headers' => $request->headers->all(),
-            'payload' => $this->input($request),
-            'session' => $request->hasSession() ? $request->session()->all() : [],
-            'response_status' => $response->getStatusCode(),
-        ]);
+        dd(PageView::all());
+
+        // PageView::create([
+        //     'ip_address' => $request->ip(),
+        //     'uri' => $uri,
+        //     'source' => 'todo',
+        //     'country_code' => 'todo',
+        //     'device_type' => 'todo',
+        //     'method' => $request->method(),
+        //     'headers' => $request->headers->all(),
+        //     'payload' => $this->input($request),
+        //     'session' => $request->hasSession() ? $request->session()->all() : [],
+        //     'response_status' => $response->getStatusCode(),
+        // ]);
 
         return $response;
     }

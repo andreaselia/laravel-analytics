@@ -13,9 +13,9 @@ class AnalyticsTest extends TestCase
     /** @test */
     function a_get_request_can_be_tracked()
     {
-        $pageView = PageView::factory()->create();
+        $pages = PageView::factory()->count(100)->create();
 
-        $this->assertTrue($pageView->id !== 0);
+        $this->assertTrue(count($pages) === 100);
     }
 
     /** @test */
