@@ -19,7 +19,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Laravel\\Analytics\\": "src/"
+            "Laravel\\Analytics\\": "src/",
+            "Laravel\\Analytics\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {

@@ -2,10 +2,9 @@
 
 namespace Laravel\Analytics\Tests;
 
-use Orchestra\Testbench\TestCase;
 use Laravel\Analytics\AnalyticsServiceProvider;
 
-class TestCase extends TestCase
+class TestCase extends \Orchestra\Testbench\TestCase
 {
     public function setUp(): void
     {
