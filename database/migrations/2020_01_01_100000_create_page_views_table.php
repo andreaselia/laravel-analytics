@@ -17,7 +17,7 @@ class CreatePageViewsTable extends Migration
             $table->id();
             $table->string('ip_address');
             $table->string('uri');
-            $table->string('source');
+            $table->string('source')->nullable();
             $table->string('country_code');
             $table->string('device_type');
             $table->timestamps();
