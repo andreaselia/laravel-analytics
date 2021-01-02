@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="min-h-screen bg-gray-100 text-gray-500 py-6 flex flex-col sm:py-16">
-        <div class="w-full sm:max-w-5xl sm:mx-auto">
+        <div class="px-4 w-full lg:px-0 sm:max-w-5xl sm:mx-auto">
             <div class="flex justify-end">
                 @include('analytics::data.filter')
             </div>
