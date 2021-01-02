@@ -6,9 +6,11 @@ use Illuminate\Console\Command;
 
 class InstallCommand extends Command
 {
-    protected string $signature = 'analytics:install';
+    /** @var string */
+    protected $signature = 'analytics:install';
 
-    protected string $description = 'Install all of the Analytics resources';
+    /** @var string */
+    protected $description = 'Install all of the Analytics resources';
 
     public function handle(): void
     {
