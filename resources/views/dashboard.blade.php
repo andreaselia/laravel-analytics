@@ -30,10 +30,9 @@
         const filterDropdown = document.getElementById('filter-dropdown');
 
         filterButton.addEventListener('click', function (e) {
+            e.preventDefault();
 
             filterDropdown.style.display = 'block';
-            console.log(filterDropdown);
-            e.preventDefault();
         });
 
         document.addEventListener('click', function (e) {
