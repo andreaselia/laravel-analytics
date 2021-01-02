@@ -18,9 +18,12 @@ class Analytics
             return $response;
         }
 
-        PageView::create([
+        PageView::create($data = [
             'ip_address' => $request->ip(),
             'uri' => $uri,
+            'source' => 'todo',
+            'country_code' => 'todo',
+            'device_type' => 'todo',
             'method' => $request->method(),
             'headers' => $request->headers->all(),
             'payload' => $this->input($request),

@@ -13,6 +13,13 @@ class HomeController extends Controller
         $pages = PageView::groupBy('uri')->latest()->take(10)->get();
 
         return view('analytics::dashboard', [
+            'filters' => [
+                'today' => 'Today',
+                '7d' => 'Last 7 days',
+                '30d' => 'Last 30 days',
+                '6m' => 'Last 6 months',
+                '12m' => 'Last 12 months',
+            ],
             'stats' => [
                 [
                     'key' => 'Unique Users',
