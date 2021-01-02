@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PageView extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $guarded = [];
+    /** @var array */
+    protected $fillable = [
+        'ip_address',
+        'uri',
+    ];
 }

@@ -4,38 +4,34 @@ namespace Laravel\Analytics\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Laravel\Analytics\Models\PageView;
 
-class Track
+class Analytics
 {
     public function handle(Request $request, Closure $next)
     {
-        $startTime = defined('LARAVEL_START') ? LARAVEL_START : $event->request->server('REQUEST_TIME_FLOAT');
+        $uri = str_replace($request->root(), '', $request->fullUrl()) ?: '/';
 
         $response = $next($request);
 
-        $data = [
+        if (\in_array($uri, config('analytics.exclude'))) {
+            return $response;
+        }
+
+        PageView::create([
             'ip_address' => $request->ip(),
-            'uri' => str_replace($request->root(), '', $request->fullUrl()) ?: '/',
+            'uri' => $uri,
             'method' => $request->method(),
-            'controller_action' => optional($request->route())->getActionName(),
             'headers' => $request->headers->all(),
             'payload' => $this->input($request),
             'session' => $request->hasSession() ? $request->session()->all() : [],
             'response_status' => $response->getStatusCode(),
-            'duration' => $startTime ? floor((microtime(true) - $startTime) * 1000) : null,
-            'memory' => round(memory_get_peak_usage(true) / 1024 / 1024, 1),
-        ];
-
-        // PageView::create($data);
-
-        dd($data);
-
-        // ...
+        ]);
 
         return $response;
     }
 
-    private function input(Request $request): array
+    protected function input(Request $request): array
     {
         $files = $request->files->all();
 

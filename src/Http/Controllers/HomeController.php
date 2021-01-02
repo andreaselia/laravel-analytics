@@ -4,11 +4,14 @@ namespace Laravel\Analytics\Http\Controllers;
 
 use Illuminate\View\View;
 use Illuminate\Routing\Controller;
+use Laravel\Analytics\Models\PageView;
 
 class HomeController extends Controller
 {
     public function index(): View
     {
+        $pages = PageView::groupBy('uri')->latest()->take(10)->get();
+
         return view('analytics::dashboard', [
             'stats' => [
                 [

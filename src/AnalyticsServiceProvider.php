@@ -4,33 +4,37 @@ namespace Laravel\Analytics;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Analytics\Http\Middleware\Analytics;
 use Laravel\Analytics\Console\InstallCommand;
 
 class AnalyticsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        // Commands...
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCommand::class,
             ]);
+
+            $this->publishes([
+                __DIR__.'/../config/analytics.php' => config_path('analytics.php'),
+            ], 'analytics-config');
         }
 
-        // Config...
+        // Migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        $this->publishes([
-            __DIR__.'/../config/analytics.php' => config_path('analytics.php'),
+        // Middleware
+        Route::middlewareGroup('analytics', [
+            Analytics::class,
         ]);
 
-        // Routes...
-
+        // Routes
         Route::group($this->routeConfig(), function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
 
-        // Views...
-
+        // Views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'analytics');
     }
 
