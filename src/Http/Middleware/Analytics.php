@@ -26,12 +26,14 @@ class Analytics
             'response_status' => $response->getStatusCode(),
         ];
 
+        \Log::debug(json_encode($data));
+
         PageView::create([
             'ip_address' => $request->ip(),
             'uri' => $uri,
-            'source' => 'todo',
-            'country_code' => 'todo',
-            'device_type' => 'todo',
+            'source' => $request->headers->get('referer'),
+            'country_code' => json_encode($request->headers->get('accept-language')), // todo: parse?
+            'device_type' => json_encode($request->headers->get('user-agent')), // todo: parse?
         ]);
 
         return $response;
