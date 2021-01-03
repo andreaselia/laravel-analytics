@@ -36,6 +36,18 @@ class PageView extends Model
         return \ucfirst($value);
     }
 
+    public function scopeFilter($query, $period = 'today')
+    {
+        if ($period !== 'today') {
+            return $query->where('created_at', '>=', now()->sub(
+                preg_replace('/[^0-9]/', '', $period),
+                preg_replace('/\d+/', '', $period)
+            ));
+        }
+
+        return $query->whereDate('created_at', now()->today());
+    }
+
     protected static function newFactory(): Factory
     {
         return PageViewFactory::new();
