@@ -3,6 +3,7 @@
 namespace Laravel\Analytics\Http\Middleware;
 
 use Closure;
+use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use Laravel\Analytics\Models\PageView;
 
@@ -14,26 +15,21 @@ class Analytics
 
         $response = $next($request);
 
-        if (\in_array($uri, config('analytics.exclude'))) {
+        if (\in_array($uri, config('analytics.exclude', []))) {
             return $response;
         }
 
-        $data = [
-            'method' => $request->method(),
-            'headers' => $request->headers->all(),
-            'payload' => $this->input($request),
-            'session' => $request->hasSession() ? $request->session()->all() : [],
-            'response_status' => $response->getStatusCode(),
-        ];
-
-        \Log::debug(json_encode($data));
+        $agent = new Agent();
+        $agent->setUserAgent($request->headers->get('user-agent'));
+        $agent->setHttpHeaders($request->headers);
 
         PageView::create([
             'ip_address' => $request->ip(),
             'uri' => $uri,
             'source' => $request->headers->get('referer'),
-            'country_code' => json_encode($request->headers->get('accept-language')), // todo: parse?
-            'device_type' => json_encode($request->headers->get('user-agent')), // todo: parse?
+            'country' => $agent->languages()[0] ?? 'en-en',
+            'browser' => $agent->browser(),
+            'device' => $agent->deviceType(),
         ]);
 
         return $response;

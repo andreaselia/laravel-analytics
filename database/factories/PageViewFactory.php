@@ -15,8 +15,9 @@ class PageViewFactory extends Factory
             'ip_address' => $this->faker->colorName,
             'uri' => $this->faker->colorName,
             'source' => $this->faker->colorName,
-            'country_code' => $this->faker->colorName,
-            'device_type' => $this->faker->colorName,
+            'country' => $this->faker->colorName,
+            'browser' => $this->faker->colorName,
+            'device' => $this->faker->colorName,
         ];
     }
 }

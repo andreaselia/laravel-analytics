@@ -15,7 +15,9 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "laravel/framework": "^8.0"
+        "ext-intl" : "*",
+        "laravel/framework": "^8.0",
+        "jenssegers/agent": "^2.6"
     },
     "autoload": {
         "psr-4": {

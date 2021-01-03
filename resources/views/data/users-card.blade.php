@@ -9,8 +9,8 @@
     <div class="divide-y divide-gray-200">
         @foreach ($users as $user)
             <div class="px-4 sm:px-6 py-3 flex justify-between hover:bg-gray-50">
-                <div class="pr-5 text-sm leading-5 text-gray-800 truncate">{{ $user['country'] }}</div>
-                <div class="text-sm leading-5 text-gray-600">{{ $user['users'] }}</div>
+                <div class="pr-5 text-sm leading-5 text-gray-800 truncate">{{ $user->country }}</div>
+                <div class="text-sm leading-5 text-gray-600">{{ $user->users }}</div>
             </div>
         @endforeach
     </div>

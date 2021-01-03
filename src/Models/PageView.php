@@ -16,9 +16,25 @@ class PageView extends Model
         'ip_address',
         'uri',
         'source',
-        'country_code',
-        'device_type',
+        'country',
+        'browser',
+        'device',
     ];
+
+    public function setSourceAttribute($value): void
+    {
+        $this->attributes['source'] = preg_replace('/https?:\/\/(www\.)?([a-z\-\.]+)\/?.*/i', '$2', $value);
+    }
+
+    public function setCountryAttribute($value): void
+    {
+        $this->attributes['country'] =  \Locale::getDisplayRegion($value, 'en');
+    }
+
+    public function getTypeAttribute($value): string
+    {
+        return \ucfirst($value);
+    }
 
     protected static function newFactory(): Factory
     {

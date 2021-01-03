@@ -11,13 +11,13 @@
             <div class="px-4 sm:px-6 py-3 flex justify-between hover:bg-gray-50">
                 <div class="pr-5 text-sm leading-5 text-gray-800 truncate">
                     <div class="flex items-center">
-                        <img class="w-4 h-4 mr-3" src="{{ $source['icon'] }}" alt="{{ $source['page'] }}" />
-                        <a href="{{ $source['page'] }}" target="_blank" class="hover:underline">
-                            {{ $source['page'] }}
+                        <img class="w-4 h-4 mr-3" src="https://favicons.githubusercontent.com/{{ urlencode($source->page) }}" alt="{{ $source->page }}" />
+                        <a href="{{ $source->page }}" target="_blank" class="hover:underline">
+                            {{ $source->page }}
                         </a>
                     </div>
                 </div>
-                <div class="text-sm leading-5 text-gray-600">{{ $source['users'] }}</div>
+                <div class="text-sm leading-5 text-gray-600">{{ $source->users }}</div>
             </div>
         @endforeach
     </div>
