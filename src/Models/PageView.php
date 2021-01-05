@@ -33,7 +33,7 @@ class PageView extends Model
 
     public function getTypeAttribute($value): string
     {
-        return \ucfirst($value);
+        return ucfirst($value);
     }
 
     public function scopeFilter($query, $period = 'today')
