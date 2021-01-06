@@ -66,7 +66,7 @@ class HomeController extends Controller
     {
         return PageView::filter($this->period)
             ->select('source as page', DB::raw('count(*) as users'))
-            ->whereNotNull('page')
+            ->whereNotNull('source')
             ->groupBy('page')
             ->get();
     }
