@@ -33,10 +33,10 @@ class HomeController extends Controller
     {
         return [
             'today' => 'Today',
-            '1week' => 'Last 7 days',
-            '30days' => 'Last 30 days',
-            '6months' => 'Last 6 months',
-            '12months' => 'Last 12 months',
+            '1_week' => 'Last 7 days',
+            '30_days' => 'Last 30 days',
+            '6_months' => 'Last 6 months',
+            '12_months' => 'Last 12 months',
         ];
     }
 
@@ -45,18 +45,24 @@ class HomeController extends Controller
         return [
             [
                 'key' => 'Unique Users',
-                'value' => PageView::filter($this->period)->groupBy('ip_address')->count(),
+                'value' => PageView::query()
+                    ->scopes(['filter' => [$this->period]])
+                    ->groupBy('ip_address')
+                    ->count(),
             ],
             [
                 'key' => 'Page Views',
-                'value' => PageView::filter($this->period)->count(),
+                'value' => PageView::query()
+                    ->scopes(['filter' => [$this->period]])
+                    ->count(),
             ],
         ];
     }
 
     protected function pages(): Collection
     {
-        return PageView::filter($this->period)
+        return PageView::query()
+            ->scopes(['filter' => [$this->period]])
             ->select('uri as page', DB::raw('count(*) as users'))
             ->groupBy('page')
             ->get();
@@ -64,16 +70,18 @@ class HomeController extends Controller
 
     protected function sources(): Collection
     {
-        return PageView::filter($this->period)
+        return PageView::query()
+            ->scopes(['filter' => [$this->period]])
             ->select('source as page', DB::raw('count(*) as users'))
-            ->whereNotNull('page')
+            ->whereNotNull('source')
             ->groupBy('page')
             ->get();
     }
 
     protected function users(): Collection
     {
-        return PageView::filter($this->period)
+        return PageView::query()
+            ->scopes(['filter' => [$this->period]])
             ->select('country', DB::raw('count(*) as users'))
             ->groupBy('country')
             ->get();
@@ -81,7 +89,8 @@ class HomeController extends Controller
 
     protected function devices(): Collection
     {
-        return PageView::filter($this->period)
+        return PageView::query()
+            ->scopes(['filter' => [$this->period]])
             ->select('device as type', DB::raw('count(*) as users'))
             ->groupBy('type')
             ->get();
