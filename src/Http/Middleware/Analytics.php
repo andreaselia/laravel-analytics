@@ -15,7 +15,7 @@ class Analytics
 
         $response = $next($request);
 
-        if (\in_array($uri, config('analytics.exclude', []))) {
+        if (in_array($uri, config('analytics.exclude', []))) {
             return $response;
         }
 
