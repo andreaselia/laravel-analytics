@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Analytics\Console;
+namespace AndreasElia\Analytics\Console;
 
 use Illuminate\Console\Command;
 

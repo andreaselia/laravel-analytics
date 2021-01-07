@@ -1,7 +1,5 @@
 <?php
 
-use Laravel\Analytics\Http\Middleware\Track;
-
 return [
 
     /**

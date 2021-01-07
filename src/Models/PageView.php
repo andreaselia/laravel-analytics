@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\Analytics\Models;
+namespace AndreasElia\Analytics\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Analytics\Database\Factories\PageViewFactory;
+use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 
 class PageView extends Model
 {

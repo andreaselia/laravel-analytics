@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\Analytics\Database\Factories;
+namespace AndreasElia\Analytics\Database\Factories;
 
-use Laravel\Analytics\Models\PageView;
+use AndreasElia\Analytics\Models\PageView;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PageViewFactory extends Factory

@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\Analytics;
+namespace AndreasElia\Analytics;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Analytics\Http\Middleware\Analytics;
-use Laravel\Analytics\Console\InstallCommand;
+use AndreasElia\Analytics\Http\Middleware\Analytics;
+use AndreasElia\Analytics\Console\InstallCommand;
 
 class AnalyticsServiceProvider extends ServiceProvider
 {
@@ -41,7 +41,7 @@ class AnalyticsServiceProvider extends ServiceProvider
     protected function routeConfig(): array
     {
         return [
-            'namespace' => 'Laravel\Analytics\Http\Controllers',
+            'namespace' => 'AndreasElia\Analytics\Http\Controllers',
             'prefix' => config('analytics.prefix'),
             'middleware' => config('analytics.middleware'),
         ];

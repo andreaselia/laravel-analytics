@@ -1,11 +1,11 @@
 <?php
 
-namespace Laravel\Analytics\Http\Middleware;
+namespace AndreasElia\Analytics\Http\Middleware;
 
 use Closure;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
-use Laravel\Analytics\Models\PageView;
+use AndreasElia\Analytics\Models\PageView;
 
 class Analytics
 {
@@ -42,7 +42,7 @@ class Analytics
         array_walk_recursive($files, function (&$file) {
             $file = [
                 'name' => $file->getClientOriginalName(),
-                'size' => $file->isFile() ? ($file->getSize() / 1000).'KB' : '0',
+                'size' => $file->isFile() ? ($file->getSize() / 1000) . 'KB' : '0',
             ];
         });
 

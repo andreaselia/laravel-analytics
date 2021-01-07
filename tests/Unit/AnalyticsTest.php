@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\Analytics\Tests\Unit;
+namespace AndreasElia\Analytics\Tests\Unit;
 
-use Laravel\Analytics\Tests\TestCase;
+use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AnalyticsTest extends TestCase

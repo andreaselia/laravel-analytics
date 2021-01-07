@@ -1,13 +1,13 @@
 <?php
 
-namespace Laravel\Analytics\Http\Controllers;
+namespace AndreasElia\Analytics\Http\Controllers;
 
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Laravel\Analytics\Models\PageView;
+use AndreasElia\Analytics\Models\PageView;
 
 class HomeController extends Controller
 {

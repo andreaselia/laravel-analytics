@@ -1,9 +1,10 @@
 {
-    "name": "laravel/analytics",
+    "name": "andreaselia/analytics",
     "description": "Analytics for the Laravel framework.",
-    "keywords": ["laravel", "analytics"],
+    "keywords": ["laravel", "analytics", "middleware", "package"],
     "license": "MIT",
-    "authors": [{
+    "authors": [
+        {
             "name": "Andreas Elia",
             "email": "contact@andreaselia.co.uk"
         },
@@ -18,23 +19,25 @@
         "illuminate/support": "^8.0",
         "illuminate/database": "^8.0",
         "illuminate/collections": "^8.0",
+        "illuminate/http": "^8.0",
+        "illuminate/view": "^8.0",
         "jenssegers/agent": "^2.6"
     },
     "autoload": {
         "psr-4": {
-            "Laravel\\Analytics\\": "src/",
-            "Laravel\\Analytics\\Database\\Factories\\": "database/factories"
+            "AndreasElia\\Analytics\\": "src/",
+            "AndreasElia\\Analytics\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Laravel\\Analytics\\Tests\\": "tests/"
+            "AndreasElia\\Analytics\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Laravel\\Analytics\\AnalyticsServiceProvider"
+                "AndreasElia\\Analytics\\AnalyticsServiceProvider"
             ]
         }
     },

@@ -1,8 +1,8 @@
 <?php
 
-namespace Laravel\Analytics\Tests;
+namespace AndreasElia\Analytics\Tests;
 
-use Laravel\Analytics\AnalyticsServiceProvider;
+use AndreasElia\Analytics\AnalyticsServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
