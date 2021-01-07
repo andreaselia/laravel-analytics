@@ -17,12 +17,12 @@ class AnalyticsServiceProvider extends ServiceProvider
             ]);
 
             $this->publishes([
-                __DIR__.'/../config/analytics.php' => config_path('analytics.php'),
+                __DIR__ . '/../config/analytics.php' => config_path('analytics.php'),
             ], 'analytics-config');
         }
 
         // Migrations
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         // Middleware
         Route::middlewareGroup('analytics', [
@@ -31,11 +31,11 @@ class AnalyticsServiceProvider extends ServiceProvider
 
         // Routes
         Route::group($this->routeConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         });
 
         // Views
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'analytics');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'analytics');
     }
 
     protected function routeConfig(): array

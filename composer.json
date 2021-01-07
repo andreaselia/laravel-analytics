@@ -3,8 +3,7 @@
     "description": "Analytics for the Laravel framework.",
     "keywords": ["laravel", "analytics"],
     "license": "MIT",
-    "authors": [
-        {
+    "authors": [{
             "name": "Andreas Elia",
             "email": "contact@andreaselia.co.uk"
         },
@@ -15,8 +14,10 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "ext-intl" : "*",
-        "laravel/framework": "^8.0",
+        "ext-intl": "*",
+        "illuminate/support": "^8.0",
+        "illuminate/database": "^8.0",
+        "illuminate/collections": "^8.0",
         "jenssegers/agent": "^2.6"
     },
     "autoload": {
