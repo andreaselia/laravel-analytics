@@ -37,4 +37,4 @@ protected $middleware = [
 
 ## Contributing
 
-You're more that welcome to submit a Pull Request, or if you're not feeling up to it - post an issue and someone else may pick it up.
+You're more than welcome to submit a Pull Request, or if you're not feeling up to it - post an issue and someone else may pick it up.
