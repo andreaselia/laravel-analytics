@@ -18,7 +18,7 @@ php artisan analytics:install --migrate
 
 Add the page view middleware to a specific route group, e.g. `web.php` like so:
 
-```bash
+```php
 Route::middleware('analytics')->group(function () {
     // ...
 });
@@ -26,7 +26,7 @@ Route::middleware('analytics')->group(function () {
 
 Add the page view to all middlewares/on an application level like so:
 
-```bash
+```php
 // app/Http/Kernel.php
 
 protected $middleware = [
@@ -37,4 +37,4 @@ protected $middleware = [
 
 ## Contributing
 
-You're more than welcome to submit a Pull Request, or if you're not feeling up to it - post an issue and someone else may pick it up.
+You're more than welcome to submit a pull request, or if you're not feeling up to it - create an issue so someone else can pick it up.
