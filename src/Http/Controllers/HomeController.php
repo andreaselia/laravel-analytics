@@ -74,7 +74,7 @@ class HomeController extends Controller
             ->scopes(['filter' => [$this->period]])
             ->select('source as page', DB::raw('count(*) as users'))
             ->whereNotNull('source')
-            ->groupBy('page')
+            ->groupBy('source')
             ->get();
     }
 

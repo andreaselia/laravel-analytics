@@ -23,12 +23,14 @@ class PageView extends Model
 
     public function setSourceAttribute($value): void
     {
-        $this->attributes['source'] = preg_replace('/https?:\/\/(www\.)?([a-z\-\.]+)\/?.*/i', '$2', $value);
+        $this->attributes['source'] = $value
+            ? preg_replace('/https?:\/\/(www\.)?([a-z\-\.]+)\/?.*/i', '$2', $value)
+            : $value;
     }
 
     public function setCountryAttribute($value): void
     {
-        $this->attributes['country'] =  \Locale::getDisplayRegion($value, 'en');
+        $this->attributes['country'] = \Locale::getDisplayRegion($value, 'en');
     }
 
     public function getTypeAttribute($value): string
