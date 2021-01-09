@@ -3,14 +3,9 @@
 namespace AndreasElia\Analytics\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 
 class PageView extends Model
 {
-    use HasFactory;
-
     /** @var array */
     protected $fillable = [
         'ip_address',
@@ -47,10 +42,5 @@ class PageView extends Model
         }
 
         return $query->whereDate('created_at', now()->today());
-    }
-
-    protected static function newFactory(): Factory
-    {
-        return PageViewFactory::new();
     }
 }
