@@ -10,13 +10,13 @@ Install the package:
 composer require laravel/analytics
 ```
 
-Run the install command below. You can remove the `--migrate` tag if you wish to migrate yourself.
+Publish the configuration with the install command:
 
 ```bash
-php artisan analytics:install --migrate
+php artisan analytics:install
 ```
 
-Add the page view middleware to a specific route group, e.g. `web.php` like so:
+You can add the page view middleware to a specific route group, e.g. `web.php` like so:
 
 ```php
 Route::middleware('analytics')->group(function () {
@@ -24,7 +24,7 @@ Route::middleware('analytics')->group(function () {
 });
 ```
 
-Add the page view to all middlewares/on an application level like so:
+Or add the page view to all middlewares/on an application level like so:
 
 ```php
 // app/Http/Kernel.php
