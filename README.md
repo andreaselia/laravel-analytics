@@ -7,7 +7,7 @@ Easily collect page view analytics with a beautifully simple to use dashboard.
 Install the package:
 
 ```bash
-composer require laravel/analytics
+composer require andreaselia/analytics
 ```
 
 Publish the configuration with the install command:
