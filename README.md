@@ -16,6 +16,12 @@ Publish the configuration with the install command:
 php artisan analytics:install
 ```
 
+Don't forget to run the migrations:
+
+```bash
+php artisan migrate
+```
+
 You can add the page view middleware to a specific route group, e.g. `web.php` like so:
 
 ```php
