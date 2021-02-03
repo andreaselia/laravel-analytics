@@ -2,6 +2,8 @@
 
 Easily collect page view analytics with a beautifully simple to use dashboard.
 
+![Laravel Analytics Dashboard](/screenshot.png?raw=true "Laravel Analytics Dashboard")
+
 ## Installation
 
 Install the package:
