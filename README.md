@@ -37,7 +37,7 @@ Or add the page view to all middlewares/on an application level like so:
 
 protected $middleware = [
     // ...
-    \Laravel\Analytics\Http\Middleware\Analytics::class,
+    \AndreasElia\Analytics\Http\Middleware\Analytics::class,
 ];
 ```
 
