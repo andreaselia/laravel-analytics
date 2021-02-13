@@ -12,10 +12,10 @@ Install the package:
 composer require andreaselia/analytics
 ```
 
-Publish the configuration with the install command:
+Publish the config file and assets:
 
 ```bash
-php artisan analytics:install
+php artisan vendor:publish --provider="AndreasElia\Analytics\AnalyticsServiceProvider"
 ```
 
 Don't forget to run the migrations:

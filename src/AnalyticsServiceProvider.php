@@ -5,17 +5,17 @@ namespace AndreasElia\Analytics;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use AndreasElia\Analytics\Http\Middleware\Analytics;
-use AndreasElia\Analytics\Console\InstallCommand;
 
 class AnalyticsServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any package services.
+     *
+     * @return void
+     */
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->commands([
-                InstallCommand::class,
-            ]);
-
             $this->publishes([
                 __DIR__.'/../config/analytics.php' => config_path('analytics.php'),
             ], 'analytics-config');
@@ -51,8 +51,15 @@ class AnalyticsServiceProvider extends ServiceProvider
         ];
     }
 
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
     public function register(): void
     {
-        //
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/analytics.php', 'analytics'
+        );
     }
 }
