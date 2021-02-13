@@ -11,7 +11,7 @@ class Analytics
 {
     public function handle(Request $request, Closure $next)
     {
-        $uri = str_replace($request->root(), '', $request->fullUrl()) ?: '/';
+        $uri = str_replace($request->root(), '', $request->url()) ?: '/';
 
         $response = $next($request);
 
