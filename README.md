@@ -18,6 +18,12 @@ Publish the configuration with the install command:
 php artisan analytics:install
 ```
 
+Publish the config file and assets:
+
+```bash
+php artisan vendor:publish --provider="AndreasElia\Analytics\AnalyticsServiceProvider"
+```
+
 Don't forget to run the migrations:
 
 ```bash
