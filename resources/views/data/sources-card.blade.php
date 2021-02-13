@@ -6,12 +6,13 @@
         <div>Page</div>
         <div>Users</div>
     </div>
-    <div class="divide-y divide-gray-200">
+    <div class="divide-y divide-gray-200 max-h-64 overflow-y-auto">
         @foreach ($sources as $source)
             <div class="px-4 sm:px-6 py-3 flex justify-between hover:bg-gray-50">
                 <div class="pr-5 text-sm leading-5 text-gray-800 truncate">
                     <div class="flex items-center">
-                        <img class="w-4 h-4 mr-3" src="https://favicons.githubusercontent.com/{{ urlencode($source->page) }}" alt="{{ $source->page }}" />
+                        <img class="w-4 h-4 mr-3" src="https://favicons.githubusercontent.com/{{ urlencode($source->page) }}" alt="" />
+
                         <a href="{{ $source->page }}" target="_blank" class="hover:underline">
                             {{ $source->page }}
                         </a>
