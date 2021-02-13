@@ -1,5 +1,7 @@
 # Laravel Analytics
 
+[![Latest Stable Version](https://poser.pugx.org/andreaselia/analytics/v)](//packagist.org/packages/andreaselia/analytics)
+
 Easily collect page view analytics with a beautifully simple to use dashboard.
 
 ![Laravel Analytics Dashboard](/screenshot.png?raw=true "Laravel Analytics Dashboard")
