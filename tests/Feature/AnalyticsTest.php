@@ -7,11 +7,10 @@ use AndreasElia\Analytics\Tests\TestCase;
 use AndreasElia\Analytics\Models\PageView;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use AndreasElia\Analytics\Http\Middleware\Analytics;
-use Illuminate\Foundation\Testing\Concerns\InteractsWithSession;
 
 class AnalyticsTest extends TestCase
 {
-    use RefreshDatabase, InteractsWithSession;
+    use RefreshDatabase;
 
     /** @test */
     function a_page_view_can_be_tracked()
