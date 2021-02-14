@@ -47,7 +47,8 @@ class HomeController extends Controller
                 'key' => 'Unique Users',
                 'value' => PageView::query()
                     ->scopes(['filter' => [$this->period]])
-                    ->groupBy('ip_address')
+                    ->groupBy('session')
+                    ->get()
                     ->count(),
             ],
             [
