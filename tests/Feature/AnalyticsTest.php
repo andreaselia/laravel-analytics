@@ -7,10 +7,11 @@ use AndreasElia\Analytics\Tests\TestCase;
 use AndreasElia\Analytics\Models\PageView;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use AndreasElia\Analytics\Http\Middleware\Analytics;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithSession;
 
 class AnalyticsTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, InteractsWithSession;
 
     function setUp(): void
     {
@@ -21,6 +22,7 @@ class AnalyticsTest extends TestCase
     function a_page_view_can_be_tracked()
     {
         $request = Request::create('/test', 'GET');
+        $request->setLaravelSession(app('session')->driver());
 
         (new Analytics)->handle($request, function ($req) {
             $this->assertEquals('test', $req->path());
