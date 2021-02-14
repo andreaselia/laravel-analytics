@@ -12,15 +12,11 @@ class AnalyticsTest extends TestCase
 {
     use RefreshDatabase;
 
-    function setUp(): void
-    {
-        parent::setUp();
-    }
-
     /** @test */
     function a_page_view_can_be_tracked()
     {
         $request = Request::create('/test', 'GET');
+        $request->setLaravelSession($this->app['session']->driver());
 
         (new Analytics)->handle($request, function ($req) {
             $this->assertEquals('test', $req->path());
