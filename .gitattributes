@@ -10,3 +10,4 @@
 /readme.md          export-ignore
 /tests              export-ignore
 /.editorconfig      export-ignore
+/screenshot.png     export-ignore
