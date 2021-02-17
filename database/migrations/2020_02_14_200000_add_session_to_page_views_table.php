@@ -14,7 +14,7 @@ class AddSessionToPageViewsTable extends Migration
     public function up()
     {
         Schema::table('page_views', function (Blueprint $table) {
-            $table->string('session')->nullable()->after('ip_address');
+            $table->string('session')->nullable()->after('uri');
         });
     }
 
