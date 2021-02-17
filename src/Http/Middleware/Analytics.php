@@ -24,7 +24,6 @@ class Analytics
         $agent->setHttpHeaders($request->headers);
 
         PageView::create([
-            'ip_address' => $request->ip(),
             'session' => $request->session()->getId(),
             'uri' => $uri,
             'source' => $request->headers->get('referer'),

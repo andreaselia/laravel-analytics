@@ -8,7 +8,6 @@ class PageView extends Model
 {
     /** @var array */
     protected $fillable = [
-        'ip_address',
         'session',
         'uri',
         'source',
