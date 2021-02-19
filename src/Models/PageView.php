@@ -41,6 +41,6 @@ class PageView extends Model
             return $query->where('created_at', '>=', now()->sub($unit, $interval));
         }
 
-        return $query->whereDate('created_at', now()->today());
+        return $query->whereDate('created_at', today());
     }
 }
