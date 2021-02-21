@@ -17,7 +17,7 @@ return [
     /**
      * Exclude
      *
-     * The routes excluded from page view tracking (e.g. /admin);
+     * The routes excluded from page view tracking.
      */
 
     'exclude' => [
