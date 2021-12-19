@@ -48,6 +48,7 @@ class HomeController extends Controller
                 'value' => PageView::query()
                     ->scopes(['filter' => [$this->period]])
                     ->groupBy('session')
+                    ->pluck('session')
                     ->count(),
             ],
             [
