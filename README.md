@@ -55,7 +55,7 @@ In these cases, you can create a custom session ID provider: create a class that
 
 One example of a custom way to generate the session ID in cookie-less environment is to hash IP address + User Agent + some other headers from the request.
 
-Feel free to take a look at `AndreasElia\Analytics\RequestSessionProvider` for an example of implementing the `SessionIdProvider` interface.
+Feel free to take a look at `AndreasElia\Analytics\RequestSessionProvider` for an example of implementing the `SessionProvider` interface.
 
 ## Contributing
 
