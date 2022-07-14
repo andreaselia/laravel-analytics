@@ -24,6 +24,8 @@ return [
         '/analytics',
     ],
 
-    'session_id_provider' => AndreasElia\Analytics\RequestSessionIdProvider::class,
+    'session' => [
+        'provider' = AndreasElia\Analytics\RequestSessionIdProvider::class,
+    ],
 
 ];
