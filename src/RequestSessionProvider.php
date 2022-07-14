@@ -2,10 +2,10 @@
 
 namespace AndreasElia\Analytics;
 
-use AndreasElia\Analytics\Contracts\SessionIdProvider;
+use AndreasElia\Analytics\Contracts\SessionProvider;
 use Illuminate\Http\Request;
 
-class RequestSessionIdProvider implements SessionIdProvider
+class RequestSessionProvider implements SessionProvider
 {
     public function get(Request $request): string
     {

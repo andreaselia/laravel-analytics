@@ -4,7 +4,7 @@ namespace AndreasElia\Analytics\Contracts;
 
 use Illuminate\Http\Request;
 
-interface SessionIdProvider
+interface SessionProvider
 {
     public function get(Request $request): string;
 }
