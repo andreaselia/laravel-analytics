@@ -25,7 +25,7 @@ return [
     ],
 
     'session' => [
-        'provider' = AndreasElia\Analytics\RequestSessionIdProvider::class,
+        'provider' => \AndreasElia\Analytics\RequestSessionIdProvider::class,
     ],
 
 ];
