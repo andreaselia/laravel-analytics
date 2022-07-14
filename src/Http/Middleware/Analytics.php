@@ -2,7 +2,7 @@
 
 namespace AndreasElia\Analytics\Http\Middleware;
 
-use AndreasElia\Analytics\Contracts\SessionIdProvider;
+use AndreasElia\Analytics\Contracts\SessionProvider;
 use Closure;
 use Illuminate\Support\Facades\App;
 use Jenssegers\Agent\Agent;
@@ -26,7 +26,7 @@ class Analytics
         $agent->setHttpHeaders($request->headers);
 
         PageView::create([
-            'session' => $this->getSessionIdProvider()->get($request),
+            'session' => $this->getSessionProvider()->get($request),
             'uri' => $uri,
             'source' => $request->headers->get('referer'),
             'country' => $agent->languages()[0] ?? 'en-en',
@@ -51,8 +51,8 @@ class Analytics
         return array_replace_recursive($request->input(), $files);
     }
 
-    private function getSessionIdProvider(): SessionIdProvider
+    private function getSessionProvider(): SessionProvider
     {
-        return App::make(config('analytics.session_id_provider'));
+        return App::make(config('analytics.session.provider'));
     }
 }
