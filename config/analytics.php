@@ -24,4 +24,8 @@ return [
         '/analytics',
     ],
 
+    'session' => [
+        'provider' => \AndreasElia\Analytics\RequestSessionIdProvider::class,
+    ],
+
 ];
