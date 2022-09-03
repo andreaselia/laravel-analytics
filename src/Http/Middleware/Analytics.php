@@ -17,8 +17,14 @@ class Analytics
 
         $response = $next($request);
 
-        if (in_array($uri, config('analytics.exclude', []))) {
-            return $response;
+        foreach (config('analytics.exclude', []) as $except) {
+            if ($except !== '/') {
+                $except = trim($except, '/');
+            }
+
+            if ($request->fullUrlIs($except) || $request->is($except)) {
+                return $response;
+            }
         }
 
         $agent = new Agent();
