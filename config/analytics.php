@@ -22,6 +22,7 @@ return [
 
     'exclude' => [
         '/analytics',
+        '/analytics/*'
     ],
 
     'session' => [
