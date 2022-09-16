@@ -33,6 +33,7 @@ class HomeController extends Controller
     {
         return [
             'today' => 'Today',
+            'yesterday' => 'Yesterday',
             '1_week' => 'Last 7 days',
             '30_days' => 'Last 30 days',
             '6_months' => 'Last 6 months',
