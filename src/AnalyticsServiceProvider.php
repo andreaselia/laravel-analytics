@@ -2,9 +2,9 @@
 
 namespace AndreasElia\Analytics;
 
+use AndreasElia\Analytics\Http\Middleware\Analytics;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use AndreasElia\Analytics\Http\Middleware\Analytics;
 
 class AnalyticsServiceProvider extends ServiceProvider
 {
@@ -26,7 +26,7 @@ class AnalyticsServiceProvider extends ServiceProvider
         }
 
         // Migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Middleware
         Route::middlewareGroup('analytics', [
@@ -35,11 +35,11 @@ class AnalyticsServiceProvider extends ServiceProvider
 
         // Routes
         Route::group($this->routeConfig(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
 
         // Views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'analytics');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'analytics');
     }
 
     protected function routeConfig(): array
