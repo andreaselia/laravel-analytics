@@ -3,11 +3,11 @@
 namespace AndreasElia\Analytics\Http\Middleware;
 
 use AndreasElia\Analytics\Contracts\SessionProvider;
+use AndreasElia\Analytics\Models\PageView;
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Jenssegers\Agent\Agent;
-use Illuminate\Http\Request;
-use AndreasElia\Analytics\Models\PageView;
 
 class Analytics
 {
@@ -33,11 +33,11 @@ class Analytics
 
         PageView::create([
             'session' => $this->getSessionProvider()->get($request),
-            'uri' => $uri,
-            'source' => $request->headers->get('referer'),
+            'uri'     => $uri,
+            'source'  => $request->headers->get('referer'),
             'country' => $agent->languages()[0] ?? 'en-en',
             'browser' => $agent->browser() ?? null,
-            'device' => $agent->deviceType(),
+            'device'  => $agent->deviceType(),
         ]);
 
         return $response;
@@ -50,7 +50,7 @@ class Analytics
         array_walk_recursive($files, function (&$file) {
             $file = [
                 'name' => $file->getClientOriginalName(),
-                'size' => $file->isFile() ? ($file->getSize() / 1000) . 'KB' : '0',
+                'size' => $file->isFile() ? ($file->getSize() / 1000).'KB' : '0',
             ];
         });
 

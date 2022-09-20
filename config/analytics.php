@@ -3,11 +3,10 @@
 return [
 
     /**
-     * Analytics Dashboard
+     * Analytics Dashboard.
      *
      * The prefix and middleware for the analytics dashboard.
      */
-
     'prefix' => 'analytics',
 
     'middleware' => [
@@ -15,14 +14,13 @@ return [
     ],
 
     /**
-     * Exclude
+     * Exclude.
      *
      * The routes excluded from page view tracking.
      */
-
     'exclude' => [
         '/analytics',
-        '/analytics/*'
+        '/analytics/*',
     ],
 
     'session' => [
