@@ -35,7 +35,7 @@ class PageView extends Model
 
     public function scopeFilter($query, $period = 'today')
     {
-        if (!in_array($period, ['today', 'yesterday'])) {
+        if (! in_array($period, ['today', 'yesterday'])) {
             [$interval, $unit] = explode('_', $period);
 
             return $query->where('created_at', '>=', now()->sub($unit, $interval));
