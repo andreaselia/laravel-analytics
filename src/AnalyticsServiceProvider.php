@@ -45,8 +45,8 @@ class AnalyticsServiceProvider extends ServiceProvider
     protected function routeConfig(): array
     {
         return [
-            'namespace' => 'AndreasElia\Analytics\Http\Controllers',
-            'prefix' => config('analytics.prefix'),
+            'namespace'  => 'AndreasElia\Analytics\Http\Controllers',
+            'prefix'     => config('analytics.prefix'),
             'middleware' => config('analytics.middleware'),
         ];
     }
@@ -59,7 +59,8 @@ class AnalyticsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/analytics.php', 'analytics'
+            __DIR__.'/../config/analytics.php',
+            'analytics'
         );
     }
 }

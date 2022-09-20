@@ -33,11 +33,11 @@ class Analytics
 
         PageView::create([
             'session' => $this->getSessionProvider()->get($request),
-            'uri' => $uri,
-            'source' => $request->headers->get('referer'),
+            'uri'     => $uri,
+            'source'  => $request->headers->get('referer'),
             'country' => $agent->languages()[0] ?? 'en-en',
             'browser' => $agent->browser() ?? null,
-            'device' => $agent->deviceType(),
+            'device'  => $agent->deviceType(),
         ]);
 
         return $response;

@@ -30,7 +30,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "AndreasElia\\Analytics\\Tests\\": "tests/"
+            "AndreasElia\\Analytics\\Tests\\": "tests/",
+            "AndreasElia\\Analytics\\Database\\Factories\\": "database/factories/"
         }
     },
     "extra": {

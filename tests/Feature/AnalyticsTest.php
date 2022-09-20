@@ -1,6 +1,6 @@
 <?php
 
-namespace AndreasElia\Analytics\Tests\Unit;
+namespace AndreasElia\Analytics\Tests\Feature;
 
 use AndreasElia\Analytics\Http\Middleware\Analytics;
 use AndreasElia\Analytics\Models\PageView;
@@ -18,14 +18,14 @@ class AnalyticsTest extends TestCase
         $request = Request::create('/test', 'GET');
         $request->setLaravelSession($this->app['session']->driver());
 
-        (new Analytics)->handle($request, function ($req) {
+        (new Analytics())->handle($request, function ($req) {
             $this->assertEquals('test', $req->path());
             $this->assertEquals('GET', $req->method());
         });
 
         $this->assertCount(1, PageView::all());
         $this->assertDatabaseHas('page_views', [
-            'uri' => '/test',
+            'uri'    => '/test',
             'device' => 'desktop',
         ]);
     }
