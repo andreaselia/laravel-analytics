@@ -2,12 +2,12 @@
 
 namespace AndreasElia\Analytics\Http\Controllers;
 
-use Illuminate\View\View;
+use AndreasElia\Analytics\Models\PageView;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use AndreasElia\Analytics\Models\PageView;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
@@ -19,12 +19,12 @@ class HomeController extends Controller
         $this->period = $request->get('period', 'today');
 
         return view('analytics::dashboard', [
-            'period' => $this->period,
+            'period'  => $this->period,
             'periods' => $this->periods(),
-            'stats' => $this->stats(),
-            'pages' => $this->pages(),
+            'stats'   => $this->stats(),
+            'pages'   => $this->pages(),
             'sources' => $this->sources(),
-            'users' => $this->users(),
+            'users'   => $this->users(),
             'devices' => $this->devices(),
         ]);
     }
@@ -32,11 +32,11 @@ class HomeController extends Controller
     protected function periods(): array
     {
         return [
-            'today' => 'Today',
+            'today'     => 'Today',
             'yesterday' => 'Yesterday',
-            '1_week' => 'Last 7 days',
-            '30_days' => 'Last 30 days',
-            '6_months' => 'Last 6 months',
+            '1_week'    => 'Last 7 days',
+            '30_days'   => 'Last 30 days',
+            '6_months'  => 'Last 6 months',
             '12_months' => 'Last 12 months',
         ];
     }
@@ -45,7 +45,7 @@ class HomeController extends Controller
     {
         return [
             [
-                'key' => 'Unique Users',
+                'key'   => 'Unique Users',
                 'value' => PageView::query()
                     ->scopes(['filter' => [$this->period]])
                     ->groupBy('session')
@@ -53,7 +53,7 @@ class HomeController extends Controller
                     ->count(),
             ],
             [
-                'key' => 'Page Views',
+                'key'   => 'Page Views',
                 'value' => PageView::query()
                     ->scopes(['filter' => [$this->period]])
                     ->count(),

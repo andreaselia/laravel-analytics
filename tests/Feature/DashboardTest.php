@@ -34,11 +34,10 @@ class DashboardTest extends TestCase
         $this->travelTo(now()->subWeeks(3), function () {
             PageViewFactory::new()->create();
         });
-
     }
 
     /** @test */
-    function it_can_get_data_from_today()
+    public function it_can_get_data_from_today()
     {
         $this->get('analytics')
             ->assertViewHas('period', 'today')
@@ -55,7 +54,7 @@ class DashboardTest extends TestCase
     }
 
     /** @test */
-    function it_can_get_data_from_yesterday()
+    public function it_can_get_data_from_yesterday()
     {
         $this->get(route('analytics', ['period' => 'yesterday']))
             ->assertViewHas('period', 'yesterday')
@@ -72,7 +71,7 @@ class DashboardTest extends TestCase
     }
 
     /** @test */
-    function it_can_get_data_for_1_week()
+    public function it_can_get_data_for_1_week()
     {
         $this->get(route('analytics', ['period' => '1_week']))
             ->assertViewHas('period', '1_week')
@@ -89,7 +88,7 @@ class DashboardTest extends TestCase
     }
 
     /** @test */
-    function it_can_get_data_for_30_days()
+    public function it_can_get_data_for_30_days()
     {
         $this->get(route('analytics', ['period' => '30_days']))
             ->assertViewHas('period', '30_days')
