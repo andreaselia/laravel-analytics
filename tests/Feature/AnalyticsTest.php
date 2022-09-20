@@ -1,6 +1,6 @@
 <?php
 
-namespace AndreasElia\Analytics\Tests\Unit;
+namespace AndreasElia\Analytics\Tests\Feature;
 
 use Illuminate\Http\Request;
 use AndreasElia\Analytics\Tests\TestCase;

@@ -1,12 +1,10 @@
 <?php
 
-namespace AndreasElia\Analytics\Tests\Unit;
+namespace AndreasElia\Analytics\Tests\Feature;
 
-use Illuminate\Http\Request;
+use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 use AndreasElia\Analytics\Tests\TestCase;
-use AndreasElia\Analytics\Models\PageView;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use AndreasElia\Analytics\Http\Middleware\Analytics;
 
 class DashboardTest extends TestCase
 {
@@ -16,65 +14,27 @@ class DashboardTest extends TestCase
     {
         parent::setUp();
 
-        PageView::create([
-            'session' => '123',
-            'uri' => '/test',
-            'source' => 'example.com',
-            'country' => 'us',
-            'browser' => 'chrome',
-            'device' => 'desktop',
-            'created_at' => now(),
+        PageViewFactory::new()->count(2)->create([
+            'session' => 'abc123',
         ]);
 
-        PageView::create([
-            'session' => '123',
-            'uri' => '/test2',
-            'source' => 'example.com',
-            'country' => 'us',
-            'browser' => 'chrome',
-            'device' => 'desktop',
-            'created_at' => now(),
-        ]);
+        $this->travelTo(now()->subDay(), function () {
+            PageViewFactory::new()->create();
+        });
 
-        PageView::insert([
-            'session' => '5555',
-            'uri' => '/test2',
-            'source' => 'example.com',
-            'country' => 'us',
-            'browser' => 'chrome',
-            'device' => 'desktop',
-            'created_at' => now()->subDay(),
-        ]);
+        $this->travelTo(now()->subDays(5), function () {
+            PageViewFactory::new()->count(2)
+                ->sequence(
+                    ['uri' => '/test1'],
+                    ['uri' => '/test2']
+                )
+                ->create(['session' => 'foo']);
+        });
 
-        PageView::insert([
-            'session' => '9123',
-            'uri' => '/test6',
-            'source' => 'example.com',
-            'country' => 'us',
-            'browser' => 'chrome',
-            'device' => 'desktop',
-            'created_at' => now()->subWeek(),
-        ]);
+        $this->travelTo(now()->subWeeks(3), function () {
+            PageViewFactory::new()->create();
+        });
 
-        PageView::insert([
-            'session' => '9123',
-            'uri' => '/test2',
-            'source' => 'example.com',
-            'country' => 'us',
-            'browser' => 'chrome',
-            'device' => 'desktop',
-            'created_at' => now()->subWeek(),
-        ]);
-
-        PageView::insert([
-            'session' => '9123',
-            'uri' => '/test2',
-            'source' => 'example.com',
-            'country' => 'us',
-            'browser' => 'chrome',
-            'device' => 'desktop',
-            'created_at' => now()->subWeeks(3),
-        ]);
     }
 
     /** @test */
@@ -84,14 +44,14 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', 'today')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 2,
                 ],
-        ]);
+            ]);
     }
 
     /** @test */
@@ -101,14 +61,14 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', 'yesterday')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 1,
                 ],
-        ]);
+            ]);
     }
 
     /** @test */
@@ -118,14 +78,14 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', '1_week')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 3,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 5,
                 ],
-        ]);
+            ]);
     }
 
     /** @test */
@@ -135,13 +95,13 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', '30_days')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
-                    'value' => 3,
+                    'key'   => 'Unique Users',
+                    'value' => 4,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 6,
                 ],
-        ]);
+            ]);
     }
 }
