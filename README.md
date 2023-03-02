@@ -47,6 +47,15 @@ protected $middleware = [
 
 ## Configuration
 
+### Excluding routes
+
+You can exclude certain routes from being tracked by adding them to the `exclude` array in the `analytics.php` config file.
+
+### Masking routes
+
+You can mask certain routes from being tracked by adding them to the `mask` array in the `analytics.php` config file. 
+This is useful if you want to track the same route with different parameters, e.g. `/users/1` and `/users/2` will be tracked as `/users/∗︎`.
+
 ### Changing how session_id is determined
 
 By default, `session_id` in the `page_views` table is filled with the session ID of the current request. However, in certain scenarios (for example, for API and other requests not using cookies), the session is unavailable.

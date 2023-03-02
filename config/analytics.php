@@ -23,6 +23,15 @@ return [
         '/analytics/*',
     ],
 
+    /**
+     * Mask.
+     *
+     * Mask routes so they are tracked together.
+     */
+    'mask' => [
+        // '/users/*',
+    ],
+
     'session' => [
         'provider' => \AndreasElia\Analytics\RequestSessionProvider::class,
     ],
