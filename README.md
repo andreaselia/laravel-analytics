@@ -68,7 +68,7 @@ Feel free to take a look at `AndreasElia\Analytics\RequestSessionProvider` for a
 
 ## Laravel Nova
 
-The packege comes with a dashboard and metrics for Laravel Nova.
+The package comes with a dashboard and metrics for Laravel Nova.
 
 ### Dashboard
 
