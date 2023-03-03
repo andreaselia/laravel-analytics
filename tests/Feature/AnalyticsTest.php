@@ -32,7 +32,7 @@ class AnalyticsTest extends TestCase
 
         $this->assertCount(1, PageView::all());
         $this->assertDatabaseHas('page_views', [
-            'uri'    => '/test',
+            'uri' => '/test',
             'device' => 'desktop',
         ]);
     }
@@ -50,7 +50,7 @@ class AnalyticsTest extends TestCase
 
         $this->assertCount(1, PageView::all());
         $this->assertDatabaseHas('page_views', [
-            'uri'    => '/test/∗︎',
+            'uri' => '/test/∗︎',
             'device' => 'desktop',
         ]);
     }
@@ -65,7 +65,7 @@ class AnalyticsTest extends TestCase
 
         $this->assertCount(0, PageView::all());
         $this->assertDatabaseMissing('page_views', [
-            'uri'    => '/analytics/123',
+            'uri' => '/analytics/123',
         ]);
     }
 }
