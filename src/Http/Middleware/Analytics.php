@@ -17,6 +17,15 @@ class Analytics
 
         $response = $next($request);
 
+        foreach (config('analytics.mask', []) as $mask) {
+            $mask = trim($mask, '/');
+
+            if ($request->fullUrlIs($mask) || $request->is($mask)) {
+                $uri = '/'.str_replace('*', '∗︎', $mask);
+                break;
+            }
+        }
+
         foreach (config('analytics.exclude', []) as $except) {
             if ($except !== '/') {
                 $except = trim($except, '/');
