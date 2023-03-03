@@ -66,6 +66,38 @@ One example of a custom way to generate the session ID in cookie-less environmen
 
 Feel free to take a look at `AndreasElia\Analytics\RequestSessionProvider` for an example of implementing the `SessionProvider` interface.
 
+## Laravel Nova
+
+The packege comes with a dashboard and metrics for Laravel Nova.
+
+### Dashboard
+
+You can add the dashboard to Laravel Nova by adding `new \AndreasElia\Analytics\Nova\Dashboards\Analytics` to `dashboards` array in your `NovaServiceProvider`:
+
+```php
+    protected function dashboards(): array
+    {
+        return [
+            new \AndreasElia\Analytics\Nova\Dashboards\Analytics,
+        ];
+    }
+```
+
+### Metrics
+
+Alternatively, you can add the metrics to your own Laravel Nova dashboard by adding them to the `cards` array in your dashboard file.
+
+```php
+    protected function cards(): array
+    {
+        return [
+            new \AndreasElia\Analytics\Nova\Metrics\Devices,
+            new \AndreasElia\Analytics\Nova\Metrics\PageViews,
+            new \AndreasElia\Analytics\Nova\Metrics\UniqueUsers,
+        ];
+    }
+```
+
 ## Contributing
 
 You're more than welcome to submit a pull request, or if you're not feeling up to it - create an issue so someone else can pick it up.
