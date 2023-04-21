@@ -51,6 +51,11 @@ protected $middleware = [
 
 You can exclude certain routes from being tracked by adding them to the `exclude` array in the `analytics.php` config file.
 
+### Ignore robots
+
+You can ignore requests from robots by setting the `ignoreRobots` property in the `analytics.php` config file.
+
+
 ### Masking routes
 
 You can mask certain routes from being tracked by adding them to the `mask` array in the `analytics.php` config file. 

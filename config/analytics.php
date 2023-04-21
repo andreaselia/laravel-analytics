@@ -24,6 +24,11 @@ return [
     ],
 
     /**
+     * Determine if traffic from robots should be tracked.
+     */
+    'ignoreRobots' => false,
+
+    /**
      * Mask.
      *
      * Mask routes so they are tracked together.

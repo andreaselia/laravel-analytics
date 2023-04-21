@@ -17,6 +17,14 @@ class Analytics
 
         $response = $next($request);
 
+        $agent = new Agent();
+        $agent->setUserAgent($request->headers->get('user-agent'));
+        $agent->setHttpHeaders($request->headers);
+
+        if (config('analytics.ignoreRobots', false) && $agent->isRobot()) {
+            return $response;
+        }
+
         foreach (config('analytics.mask', []) as $mask) {
             $mask = trim($mask, '/');
 
@@ -35,10 +43,6 @@ class Analytics
                 return $response;
             }
         }
-
-        $agent = new Agent();
-        $agent->setUserAgent($request->headers->get('user-agent'));
-        $agent->setHttpHeaders($request->headers);
 
         PageView::create([
             'session' => $this->getSessionProvider()->get($request),
