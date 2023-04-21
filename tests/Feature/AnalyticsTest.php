@@ -7,6 +7,7 @@ use AndreasElia\Analytics\Models\PageView;
 use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class AnalyticsTest extends TestCase
 {
@@ -66,6 +67,47 @@ class AnalyticsTest extends TestCase
         $this->assertCount(0, PageView::all());
         $this->assertDatabaseMissing('page_views', [
             'uri' => '/analytics/123',
+        ]);
+    }
+
+    /** @test */
+    public function a_page_view_from_robot_can_be_tracked_if_enabled()
+    {
+        Config::set('analytics.ignoreRobots', false);
+
+        $request = Request::create('/test', 'GET');
+        $request->headers->set('User-Agent', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'device' => 'robot',
+        ]);
+    }
+
+    /** @test */
+    public function a_page_view_from_robot_is_not_tracked_if_enabled()
+    {
+        Config::set('analytics.ignoreRobots', true);
+
+        $request = Request::create('/test', 'GET');
+        $request->headers->set('User-Agent', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(0, PageView::all());
+        $this->assertDatabaseMissing('page_views', [
+            'uri' => '/test',
         ]);
     }
 }
