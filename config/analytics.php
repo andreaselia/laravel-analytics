@@ -42,4 +42,11 @@ return [
     ],
 
     'registerRoutes' => true,
+
+    'translations' => [
+        'devices' => 'Devices',
+        'pages' => 'Pages',
+        'sources' => 'Sources',
+        'users' => 'Users',
+    ],
 ];
