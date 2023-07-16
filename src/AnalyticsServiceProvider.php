@@ -33,7 +33,7 @@ class AnalyticsServiceProvider extends ServiceProvider
             Analytics::class,
         ]);
 
-        if(config('analytics.registerRoutes')){
+        if (config('analytics.registerRoutes')){
             // Routes
             Route::group($this->routeConfig(), function () {
                 $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
