@@ -41,4 +41,5 @@ return [
         'provider' => \AndreasElia\Analytics\RequestSessionProvider::class,
     ],
 
+    'registerRoutes' => true,
 ];
