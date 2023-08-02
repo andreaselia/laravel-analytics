@@ -29,12 +29,12 @@ return [
     'ignoreRobots' => false,
 
     /**
-     * Ignored IPs.
+     * Ignored IP addresses.
      *
-     * The ip addresses excluded from page view tracking.
+     * The IP addresses excluded from page view tracking.
      */
     'ignoredIPs' => [
-            //'192.168.1.1',
+        // '192.168.1.1',
     ],
 
     /**
