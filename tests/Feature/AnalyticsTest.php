@@ -110,4 +110,23 @@ class AnalyticsTest extends TestCase
             'uri' => '/test',
         ]);
     }
+
+    /** @test */
+    public function a_page_view_from_an_excluded_ip_is_not_tracked_if_enabled()
+    {
+        Config::set('analytics.ignoredIPs', ['127.0.0.2']);
+
+        $request = Request::create('/test', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(0, PageView::all());
+        $this->assertDatabaseMissing('page_views', [
+            'uri' => '/test',
+        ]);
+    }
 }

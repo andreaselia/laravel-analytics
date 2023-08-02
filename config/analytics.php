@@ -29,6 +29,15 @@ return [
     'ignoreRobots' => false,
 
     /**
+     * Ignored IP addresses.
+     *
+     * The IP addresses excluded from page view tracking.
+     */
+    'ignoredIPs' => [
+        // '192.168.1.1',
+    ],
+
+    /**
      * Mask.
      *
      * Mask routes so they are tracked together.
