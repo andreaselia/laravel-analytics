@@ -17,6 +17,12 @@ class Analytics
 
         $response = $next($request);
 
+        $ignoredIps = config('analytics.ignoredIPs', []);
+
+        if (in_array($request->ip(), $ignoredIps)) {
+            return $response;
+        }
+
         $agent = new Agent();
         $agent->setUserAgent($request->headers->get('user-agent'));
         $agent->setHttpHeaders($request->headers);

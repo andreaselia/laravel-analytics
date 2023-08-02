@@ -55,6 +55,9 @@ You can exclude certain routes from being tracked by adding them to the `exclude
 
 You can ignore requests from robots by setting the `ignoreRobots` property in the `analytics.php` config file.
 
+### Ignore specific IP addresses
+
+You can ignore requests from specific IP addresses by adding them to the `ignoreIps` array in the `analytics.php` config file.
 
 ### Masking routes
 
