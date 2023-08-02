@@ -120,14 +120,13 @@ class AnalyticsTest extends TestCase
         $request->setLaravelSession($this->app['session']->driver());
 
         (new Analytics())->handle($request, function ($req) {
-                $this->assertEquals('test', $req->path());
-                $this->assertEquals('GET', $req->method());
-            });
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
 
         $this->assertCount(0, PageView::all());
         $this->assertDatabaseMissing('page_views', [
             'uri' => '/test',
         ]);
     }
-
 }
