@@ -129,4 +129,59 @@ class AnalyticsTest extends TestCase
             'uri' => '/test',
         ]);
     }
+
+    /** @test */
+    public function utm_details_can_be_saved_with_page_views()
+    {
+        $request = Request::create('/test', 'GET', [
+            'utm_source' => 'test-source',
+            'utm_medium' => 'test-medium',
+            'utm_campaign' => 'test-campaign',
+            'utm_term' => 'test-term',
+            'utm_content' => 'test-content',
+        ]);
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'device' => 'desktop',
+            'utm_source' => 'test-source',
+            'utm_medium' => 'test-medium',
+            'utm_campaign' => 'test-campaign',
+            'utm_term' => 'test-term',
+            'utm_content' => 'test-content',
+        ]);
+    }
+
+    /** @test */
+    public function utm_details_will_be_trimmed()
+    {
+        $string = 'Nv19I4yx6b8OEjFhtSqYGANwRim0WJHTQoUDaK3vc72Xl5rMZk1PpFLBdVuCfZgs7TwMeRhxYi9n6CLt2pzqOBGjXSaHwvyJ8KEVNv19I4yx6b8OEjFhtSqYGANwRim0WJHTQoUDaK3vc72Xl5rMZk1PpFLBdVuCfZgs7TwMeRhxYi9n6CLt2pzqOBGjXSaHwvyJ8KEVNv19I4yx6b8OEjFhtSqYGANwRim0WJHTQoUDaK3vc72Xl5rMZk1PpFLBdVuCfZgs7TwMeRhxYi9n6CLt2pzqOBGjXSaHwvyJ8KEV';
+        $request = Request::create('/test', 'GET', [
+            'utm_source' => $string,
+        ]);
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'device' => 'desktop',
+            'utm_source' => substr($string, 0, 255),
+            'utm_medium' => null,
+            'utm_campaign' => null,
+            'utm_term' => null,
+            'utm_content' => null,
+        ]);
+    }
 }

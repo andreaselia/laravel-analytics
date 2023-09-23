@@ -14,6 +14,11 @@ class PageView extends Model
         'country',
         'browser',
         'device',
+        'utm_source',
+        'utm_medium',
+        'utm_campaign',
+        'utm_term',
+        'utm_content',
     ];
 
     public function setSourceAttribute($value): void

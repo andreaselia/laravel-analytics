@@ -13,8 +13,6 @@ class Analytics
 {
     public function handle(Request $request, Closure $next)
     {
-        $uri = str_replace($request->root(), '', $request->url()) ?: '/';
-
         $response = $next($request);
 
         $ignoredIps = config('analytics.ignoredIPs', []);
@@ -30,6 +28,8 @@ class Analytics
         if (config('analytics.ignoreRobots', false) && $agent->isRobot()) {
             return $response;
         }
+
+        $uri = str_replace($request->root(), '', $request->url()) ?: '/';
 
         foreach (config('analytics.mask', []) as $mask) {
             $mask = trim($mask, '/');
@@ -50,14 +50,25 @@ class Analytics
             }
         }
 
-        PageView::create([
+        $utm = array_map(
+            fn ($item) => substr($item, 0, 255),
+            $request->only([
+                'utm_source',
+                'utm_medium',
+                'utm_campaign',
+                'utm_term',
+                'utm_content',
+            ])
+        );
+
+        PageView::create(array_merge([
             'session' => $this->getSessionProvider()->get($request),
             'uri'     => $uri,
             'source'  => $request->headers->get('referer'),
             'country' => $agent->languages()[0] ?? 'en-en',
             'browser' => $agent->browser() ?? null,
             'device'  => $agent->deviceType(),
-        ]);
+        ], $utm));
 
         return $response;
     }
