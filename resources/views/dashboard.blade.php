@@ -21,6 +21,7 @@
                 @include('analytics::data.sources-card')
                 @include('analytics::data.users-card')
                 @include('analytics::data.devices-card')
+                @each('analytics::data.utm-card', $utm, 'data')
             </div>
         </div>
     </div>

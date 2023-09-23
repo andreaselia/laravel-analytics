@@ -26,6 +26,7 @@ class HomeController extends Controller
             'sources' => $this->sources(),
             'users'   => $this->users(),
             'devices' => $this->devices(),
+            'utm'     => $this->utm(),
         ]);
     }
 
@@ -96,5 +97,29 @@ class HomeController extends Controller
             ->select('device as type', DB::raw('count(*) as users'))
             ->groupBy('type')
             ->get();
+    }
+
+    protected function utm(): Collection
+    {
+        return collect([
+            'utm_source',
+            'utm_medium',
+            'utm_campaign',
+            'utm_term',
+            'utm_content',
+        ])->mapWithKeys(fn (string $key) => [$key => [
+            'key'   => $key,
+            'items' => PageView::query()
+                ->select([$key, DB::raw('count(*) as count')])
+                ->scopes(['filter' => [$this->period]])
+                ->whereNotNull($key)
+                ->groupBy($key)
+                ->orderBy('count', 'desc')
+                ->get()
+                ->map(fn ($item) => [
+                    'value' => $item->{$key},
+                    'count' => $item->count,
+                ]),
+        ]])->filter(fn (array $set) => $set['items']->count() > 0);
     }
 }
