@@ -17,6 +17,10 @@ class Analytics
 
         $response = $next($request);
 
+        if (in_array($request->method(), config('analytics.ignoreMethods', []))) {
+            return $response;
+        }
+
         $ignoredIps = config('analytics.ignoredIPs', []);
 
         if (in_array($request->ip(), $ignoredIps)) {

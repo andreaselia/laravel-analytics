@@ -46,6 +46,15 @@ return [
         // '/users/*',
     ],
 
+    /**
+     * Ignore methods.
+     *
+     * The HTTP verbs/methods that should be excluded from page view tracking.
+     */
+    'ignoreMethods' => [
+        // 'OPTIONS', 'POST',
+    ],
+
     'session' => [
         'provider' => \AndreasElia\Analytics\RequestSessionProvider::class,
     ],
