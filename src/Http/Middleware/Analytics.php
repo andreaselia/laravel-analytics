@@ -17,7 +17,7 @@ class Analytics
 
         $response = $next($request);
 
-        if (!config('analytics.enabled')) {
+        if (! config('analytics.enabled')) {
             return $response;
         }
 
