@@ -2,6 +2,8 @@
 
 return [
 
+    'enabled' => env('ANALYTICS_ENABLED', true),
+
     /**
      * Analytics Dashboard.
      *

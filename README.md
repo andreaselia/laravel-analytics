@@ -47,6 +47,10 @@ protected $middleware = [
 
 ## Configuration
 
+### Disabling tracking
+
+You can disable tracking by setting the environment variable `ANALYTICS_ENABLED` or the `enabled` property in the `analytics.php` config file to `false`.
+
 ### Excluding routes
 
 You can exclude certain routes from being tracked by adding them to the `exclude` array in the `analytics.php` config file.
