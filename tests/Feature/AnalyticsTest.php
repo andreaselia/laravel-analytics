@@ -8,6 +8,7 @@ use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class AnalyticsTest extends TestCase
 {
@@ -177,7 +178,7 @@ class AnalyticsTest extends TestCase
     /** @test */
     public function utm_details_will_be_trimmed()
     {
-        $string = 'Nv19I4yx6b8OEjFhtSqYGANwRim0WJHTQoUDaK3vc72Xl5rMZk1PpFLBdVuCfZgs7TwMeRhxYi9n6CLt2pzqOBGjXSaHwvyJ8KEVNv19I4yx6b8OEjFhtSqYGANwRim0WJHTQoUDaK3vc72Xl5rMZk1PpFLBdVuCfZgs7TwMeRhxYi9n6CLt2pzqOBGjXSaHwvyJ8KEVNv19I4yx6b8OEjFhtSqYGANwRim0WJHTQoUDaK3vc72Xl5rMZk1PpFLBdVuCfZgs7TwMeRhxYi9n6CLt2pzqOBGjXSaHwvyJ8KEV';
+        $string = Str::random(300);
         $request = Request::create('/test', 'GET', [
             'utm_source' => $string,
         ]);
