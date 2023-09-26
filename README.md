@@ -68,6 +68,16 @@ You can ignore requests from specific IP addresses by adding them to the `ignore
 You can mask certain routes from being tracked by adding them to the `mask` array in the `analytics.php` config file. 
 This is useful if you want to track the same route with different parameters, e.g. `/users/1` and `/users/2` will be tracked as `/users/∗︎`.
 
+### Ignoring certain HTTP verbs/methods
+
+You can ignore the tracking of some methods by adding them to the `analytics.ignoreMethods` config option. For example, if you don't want to track `POST` requests, you can configure it like so:
+
+```php
+'ignoreMethods' => [
+    'POST',
+],
+```
+
 ### Changing how session_id is determined
 
 By default, `session_id` in the `page_views` table is filled with the session ID of the current request. However, in certain scenarios (for example, for API and other requests not using cookies), the session is unavailable.

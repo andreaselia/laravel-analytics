@@ -87,6 +87,21 @@ class AnalyticsTest extends TestCase
     }
 
     /** @test */
+    public function methods_can_be_excluded()
+    {
+        Config::set('analytics.ignoreMethods', ['POST']);
+        $request = Request::create('/users', 'POST');
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, fn ($req) => null);
+
+        $this->assertCount(0, PageView::all());
+        $this->assertDatabaseMissing('page_views', [
+            'uri' => '/users',
+        ]);
+    }
+
+    /** @test */
     public function a_page_view_from_robot_can_be_tracked_if_enabled()
     {
         Config::set('analytics.ignoreRobots', false);

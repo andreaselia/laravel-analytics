@@ -19,6 +19,10 @@ class Analytics
             return $response;
         }
 
+        if (in_array($request->method(), config('analytics.ignoreMethods', []))) {
+            return $response;
+        }
+
         if (in_array($request->ip(), config('analytics.ignoredIPs', []))) {
             return $response;
         }
