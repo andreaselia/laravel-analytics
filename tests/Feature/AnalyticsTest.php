@@ -8,6 +8,7 @@ use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class AnalyticsTest extends TestCase
 {
@@ -142,6 +143,61 @@ class AnalyticsTest extends TestCase
         $this->assertCount(0, PageView::all());
         $this->assertDatabaseMissing('page_views', [
             'uri' => '/test',
+        ]);
+    }
+
+    /** @test */
+    public function utm_details_can_be_saved_with_page_views()
+    {
+        $request = Request::create('/test', 'GET', [
+            'utm_source' => 'test-source',
+            'utm_medium' => 'test-medium',
+            'utm_campaign' => 'test-campaign',
+            'utm_term' => 'test-term',
+            'utm_content' => 'test-content',
+        ]);
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'device' => 'desktop',
+            'utm_source' => 'test-source',
+            'utm_medium' => 'test-medium',
+            'utm_campaign' => 'test-campaign',
+            'utm_term' => 'test-term',
+            'utm_content' => 'test-content',
+        ]);
+    }
+
+    /** @test */
+    public function utm_details_will_be_trimmed()
+    {
+        $string = Str::random(300);
+        $request = Request::create('/test', 'GET', [
+            'utm_source' => $string,
+        ]);
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'device' => 'desktop',
+            'utm_source' => substr($string, 0, 255),
+            'utm_medium' => null,
+            'utm_campaign' => null,
+            'utm_term' => null,
+            'utm_content' => null,
         ]);
     }
 }
