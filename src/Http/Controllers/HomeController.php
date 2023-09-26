@@ -68,6 +68,7 @@ class HomeController extends Controller
             ->scopes(['filter' => [$this->period]])
             ->select('uri as page', DB::raw('count(*) as users'))
             ->groupBy('page')
+            ->orderBy('users', 'desc')
             ->get();
     }
 
@@ -78,6 +79,7 @@ class HomeController extends Controller
             ->select('source as page', DB::raw('count(*) as users'))
             ->whereNotNull('source')
             ->groupBy('source')
+            ->orderBy('users', 'desc')
             ->get();
     }
 
@@ -87,6 +89,7 @@ class HomeController extends Controller
             ->scopes(['filter' => [$this->period]])
             ->select('country', DB::raw('count(*) as users'))
             ->groupBy('country')
+            ->orderBy('users', 'desc')
             ->get();
     }
 
@@ -96,6 +99,7 @@ class HomeController extends Controller
             ->scopes(['filter' => [$this->period]])
             ->select('device as type', DB::raw('count(*) as users'))
             ->groupBy('type')
+            ->orderBy('users', 'desc')
             ->get();
     }
 

@@ -39,6 +39,21 @@ class AnalyticsTest extends TestCase
     }
 
     /** @test */
+    public function page_views_arent_tracked_when_not_enabled()
+    {
+        Config::set('analytics.enabled', false);
+        $request = Request::create('/page');
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, fn ($req) => null);
+
+        $this->assertCount(0, PageView::all());
+        $this->assertDatabaseMissing('page_views', [
+            'uri' => '/page',
+        ]);
+    }
+
+    /** @test */
     public function a_page_view_can_be_masked()
     {
         $request = Request::create('/test/123', 'GET');

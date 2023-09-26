@@ -15,9 +15,11 @@ class Analytics
     {
         $response = $next($request);
 
-        $ignoredIps = config('analytics.ignoredIPs', []);
+        if (! config('analytics.enabled')) {
+            return $response;
+        }
 
-        if (in_array($request->ip(), $ignoredIps)) {
+        if (in_array($request->ip(), config('analytics.ignoredIPs', []))) {
             return $response;
         }
 
