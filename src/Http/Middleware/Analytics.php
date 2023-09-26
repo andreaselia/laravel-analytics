@@ -17,13 +17,15 @@ class Analytics
 
         $response = $next($request);
 
+        if (! config('analytics.enabled')) {
+            return $response;
+        }
+
         if (in_array($request->method(), config('analytics.ignoreMethods', []))) {
             return $response;
         }
 
-        $ignoredIps = config('analytics.ignoredIPs', []);
-
-        if (in_array($request->ip(), $ignoredIps)) {
+        if (in_array($request->ip(), config('analytics.ignoredIPs', []))) {
             return $response;
         }
 
