@@ -1,3 +1,16 @@
+@if($uri)
+    <span class="mr-2 inline-flex items-center gap-x-0.5 rounded-md bg-white px-2 py-1 text-xs font-medium text-gray-600">
+        <span>uri: {{ $uri }}</span>
+        <a href="/analytics?period={{ $period }}" class="group relative -mr-1 h-3.5 w-3.5 rounded-sm hover:bg-gray-500/20">
+            <span class="sr-only">Remove</span>
+            <svg viewBox="0 0 14 14" class="h-3.5 w-3.5 stroke-gray-600/50 group-hover:stroke-gray-600/75">
+                <path d="M4 4l6 6m0-6l-6 6" />
+            </svg>
+            <span class="absolute -inset-1"></span>
+        </a>
+    </span>
+@endif
+
 <div class="relative inline-block text-left">
     <div>
         <button type="button" class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200" id="filter-button">

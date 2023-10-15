@@ -52,4 +52,11 @@ class PageView extends Model
 
         return $query->whereDate('created_at', today());
     }
+
+    public function scopeUri($query, $uri = null)
+    {
+        $query->when($uri, function ($query, string $uri) {
+            $query->where('uri', $uri);
+        });
+    }
 }

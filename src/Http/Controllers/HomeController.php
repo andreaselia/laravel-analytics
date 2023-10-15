@@ -11,15 +11,21 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    /** @var string */
-    protected $period;
+    protected array $scopes;
 
     public function index(Request $request): View
     {
-        $this->period = $request->get('period', 'today');
+        $period = $request->input('period', 'today');
+        $uri = $request->input('uri');
+
+        $this->scopes = [
+            'filter' => [$period],
+            'uri' => [$uri],
+        ];
 
         return view('analytics::dashboard', [
-            'period'  => $this->period,
+            'period'  => $period,
+            'uri'     => $uri,
             'periods' => $this->periods(),
             'stats'   => $this->stats(),
             'pages'   => $this->pages(),
@@ -48,7 +54,7 @@ class HomeController extends Controller
             [
                 'key'   => 'Unique Users',
                 'value' => PageView::query()
-                    ->scopes(['filter' => [$this->period]])
+                    ->scopes($this->scopes)
                     ->groupBy('session')
                     ->pluck('session')
                     ->count(),
@@ -56,7 +62,7 @@ class HomeController extends Controller
             [
                 'key'   => 'Page Views',
                 'value' => PageView::query()
-                    ->scopes(['filter' => [$this->period]])
+                    ->scopes($this->scopes)
                     ->count(),
             ],
         ];
@@ -65,7 +71,7 @@ class HomeController extends Controller
     protected function pages(): Collection
     {
         return PageView::query()
-            ->scopes(['filter' => [$this->period]])
+            ->scopes($this->scopes)
             ->select('uri as page', DB::raw('count(*) as users'))
             ->groupBy('page')
             ->orderBy('users', 'desc')
@@ -75,7 +81,7 @@ class HomeController extends Controller
     protected function sources(): Collection
     {
         return PageView::query()
-            ->scopes(['filter' => [$this->period]])
+            ->scopes($this->scopes)
             ->select('source as page', DB::raw('count(*) as users'))
             ->whereNotNull('source')
             ->groupBy('source')
@@ -86,7 +92,7 @@ class HomeController extends Controller
     protected function users(): Collection
     {
         return PageView::query()
-            ->scopes(['filter' => [$this->period]])
+            ->scopes($this->scopes)
             ->select('country', DB::raw('count(*) as users'))
             ->groupBy('country')
             ->orderBy('users', 'desc')
@@ -96,7 +102,7 @@ class HomeController extends Controller
     protected function devices(): Collection
     {
         return PageView::query()
-            ->scopes(['filter' => [$this->period]])
+            ->scopes($this->scopes)
             ->select('device as type', DB::raw('count(*) as users'))
             ->groupBy('type')
             ->orderBy('users', 'desc')
@@ -115,7 +121,7 @@ class HomeController extends Controller
             'key'   => $key,
             'items' => PageView::query()
                 ->select([$key, DB::raw('count(*) as count')])
-                ->scopes(['filter' => [$this->period]])
+                ->scopes($this->scopes)
                 ->whereNotNull($key)
                 ->groupBy($key)
                 ->orderBy('count', 'desc')

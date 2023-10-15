@@ -10,7 +10,7 @@
         @foreach ($pages as $page)
             <div class="px-4 sm:px-6 py-3 flex justify-between hover:bg-gray-50">
                 <div class="pr-5 text-sm leading-5 text-gray-800 truncate">
-                    <a href="{{ $page->page }}" target="_blank" class="hover:underline">
+                    <a href="/analytics?period={{ $period }}&uri={{ $page->page }}" class="hover:underline">
                         {{ $page->page }}
                     </a>
                 </div>
