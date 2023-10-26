@@ -1,10 +1,10 @@
 <div class="flex items-center justify-end gap-2">
     @if ($uri)
-        <div class="inline-flex justify-center rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700">
-            <span className="text-sm font-medium text-gray-700">URI: {{ $uri }}</span>
-            <a href="{{ route('analytics', ['period' => $period]) }}">
+        <div class="inline-flex items-center justify-center rounded-md shadow-sm px-4 py-2 bg-white">
+            <span class="text-sm font-medium text-gray-700">{{ $uri }}</span>
+            <a href="{{ route('analytics', ['period' => $period]) }}" class="text-gray-700 hover:text-gray-400">
                 <span class="sr-only">Remove</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-2 h-5 w-5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="-mr-1 ml-2 h-4 w-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </a>
