@@ -7,11 +7,15 @@
         <div>Count</div>
     </div>
     <div class="divide-y divide-gray-200 max-h-64 overflow-y-auto">
-        @foreach ($data['items'] as $item)
+        @forelse ($data['items'] as $item)
             <div class="px-4 sm:px-6 py-3 flex justify-between hover:bg-gray-50">
                 <div class="pr-5 text-sm leading-5 text-gray-800 truncate">{{ $item['value'] }}</div>
                 <div class="text-sm leading-5 text-gray-600">{{ $item['count'] }}</div>
             </div>
-        @endforeach
+        @empty
+            <div class="px-4 sm:px-6 py-3 flex justify-center hover:bg-gray-50">
+                <div class="text-sm leading-5 text-gray-800 truncate">No data</div>
+            </div>
+        @endforelse
     </div>
 </div>

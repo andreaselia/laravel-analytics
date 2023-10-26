@@ -1,31 +1,32 @@
-@if($uri)
-    <span class="mr-2 inline-flex items-center gap-x-0.5 rounded-md bg-white px-2 py-1 text-xs font-medium text-gray-600">
-        <span>uri: {{ $uri }}</span>
-        <a href="/analytics?period={{ $period }}" class="group relative -mr-1 h-3.5 w-3.5 rounded-sm hover:bg-gray-500/20">
-            <span class="sr-only">Remove</span>
-            <svg viewBox="0 0 14 14" class="h-3.5 w-3.5 stroke-gray-600/50 group-hover:stroke-gray-600/75">
-                <path d="M4 4l6 6m0-6l-6 6" />
-            </svg>
-            <span class="absolute -inset-1"></span>
-        </a>
-    </span>
-@endif
+<div class="flex items-center justify-end gap-2">
+    @if ($uri)
+        <div class="inline-flex justify-center rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700">URI: {{ $uri }}</span>
+            <a href="{{ route('analytics', ['period' => $period]) }}">
+                <span class="sr-only">Remove</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-2 h-5 w-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </a>
+        </div>
+    @endif
 
-<div class="relative inline-block text-left">
-    <div>
-        <button type="button" class="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200" id="filter-button">
-            {{ $periods[$period] }}
-            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-        </button>
-    </div>
+    <div class="relative inline-block text-left">
+        <div>
+            <button type="button" class="inline-flex justify-center rounded-md shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200" id="filter-button">
+                {{ $periods[$period] }}
+                <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
 
-    <div class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" style="display: none;" id="filter-dropdown">
-        <div class="p-2" role="menu" aria-orientation="vertical" aria-labelledby="filter-button">
-            @foreach ($periods as $key => $value)
-                <a href="{{ url(config('analytics.prefix')) }}?period={{ $key }}" class="block px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">{{ $value }}</a>
-            @endforeach
+        <div class="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" style="display: none;" id="filter-dropdown">
+            <div class="p-2" role="menu" aria-orientation="vertical" aria-labelledby="filter-button">
+                @foreach ($periods as $key => $value)
+                    <a href="{{ url(config('analytics.prefix')) }}?period={{ $key }}" class="block px-4 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">{{ $value }}</a>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>

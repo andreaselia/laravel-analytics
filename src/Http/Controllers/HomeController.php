@@ -11,7 +11,7 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    protected array $scopes;
+    protected array $scopes = [];
 
     public function index(Request $request): View
     {
