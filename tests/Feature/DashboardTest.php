@@ -103,4 +103,25 @@ class DashboardTest extends TestCase
                 ],
             ]);
     }
+
+    /** @test */
+    public function it_can_get_data_for_30_days_filtered_by_uri()
+    {
+        $this->get(route('analytics', [
+            'period' => '30_days',
+            'uri' => '/test1',
+        ]))
+            ->assertViewHas('period', '30_days')
+            ->assertViewHas('uri', '/test1')
+            ->assertViewHas('stats', [
+                [
+                    'key'   => 'Unique Users',
+                    'value' => 1,
+                ],
+                [
+                    'key'   => 'Page Views',
+                    'value' => 1,
+                ],
+            ]);
+    }
 }

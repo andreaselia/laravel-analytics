@@ -7,11 +7,15 @@
         <div>Users</div>
     </div>
     <div class="divide-y divide-gray-200 max-h-64 overflow-y-auto">
-        @foreach ($users as $user)
+        @forelse ($users as $user)
             <div class="px-4 sm:px-6 py-3 flex justify-between hover:bg-gray-50">
                 <div class="pr-5 text-sm leading-5 text-gray-800 truncate">{{ $user->country }}</div>
                 <div class="text-sm leading-5 text-gray-600">{{ $user->users }}</div>
             </div>
-        @endforeach
+        @empty
+            <div class="px-4 sm:px-6 py-3 flex justify-center hover:bg-gray-50">
+                <div class="text-sm leading-5 text-gray-800 truncate">No data</div>
+            </div>
+        @endforelse
     </div>
 </div>
