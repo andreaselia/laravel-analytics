@@ -74,6 +74,7 @@ class Analytics
             'country' => $agent->languages()[0] ?? 'en-en',
             'browser' => $agent->browser() ?? null,
             'device'  => $agent->deviceType(),
+            'host' => $request->getHost(),
         ], $utm));
 
         return $response;
