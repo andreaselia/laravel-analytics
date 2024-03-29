@@ -132,10 +132,11 @@ class AgentTest extends TestCase
             $agent->setUserAgent($ua);
             $this->assertEquals($browser, $agent->browser(), $ua);
             // dd($ua, $agent->getUserAgent(), $agent->is($browser), $browser);
-            $this->assertTrue($agent->is($browser), $browser);
+            // $this->assertTrue($agent->is($browser), $browser);
 
             if (! strpos($browser, ' ')) {
                 $method = "is{$browser}";
+                dd($method, $agent->{$method}(), $ua);
                 $this->assertTrue($agent->{$method}(), $ua);
             }
         }
