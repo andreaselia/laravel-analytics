@@ -27,10 +27,7 @@ class AddHostToPageViews extends Migration
     public function down()
     {
         Schema::table('page_views', function (Blueprint $table) {
-            $table->dropColumn([
-                'host',
-                
-            ]);
+            $table->dropColumn('host');
         });
     }
 }
