@@ -203,7 +203,8 @@ class Agent extends MobileDetect
             static::getDesktopDevices(),
             static::getPhoneDevices(),
             static::getTabletDevices(),
-            static::getUtilities()
+            // TODO: this was removed, is there an alternative? what was it for?
+            // static::getUtilities()
         );
 
         return $this->findDetectionRulesAgainstUA($rules, $userAgent);
@@ -316,17 +317,17 @@ class Agent extends MobileDetect
         return $merged;
     }
 
-    public function __call(string $name, array $arguments)
-    {
-        // Make sure the name starts with 'is', otherwise
-        if (strpos($name, 'is') !== 0) {
-            throw new BadMethodCallException("No such method exists: $name");
-        }
+    // public function __call(string $name, array $arguments)
+    // {
+    //     // Make sure the name starts with 'is', otherwise
+    //     if (strpos($name, 'is') !== 0) {
+    //         throw new BadMethodCallException("No such method exists: $name");
+    //     }
 
-        // $this->setDetectionType(self::DETECTION_TYPE_EXTENDED);
+    //     // $this->setDetectionType(self::DETECTION_TYPE_EXTENDED);
 
-        $key = substr($name, 2);
+    //     $key = substr($name, 2);
 
-        return $this->matchUAAgainstKey($key);
-    }
+    //     return $this->matchUAAgainstKey($key);
+    // }
 }
