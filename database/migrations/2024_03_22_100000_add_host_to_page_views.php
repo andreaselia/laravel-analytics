@@ -15,7 +15,6 @@ class AddHostToPageViews extends Migration
     {
         Schema::table('page_views', function (Blueprint $table) {
             $table->string('host')->nullable()->after('device');
-            
         });
     }
 
