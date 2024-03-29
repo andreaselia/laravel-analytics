@@ -178,6 +178,7 @@ class AgentTest extends TestCase
 
     /**
      * @test
+     *
      * @expectedException \BadMethodCallException
      */
     public function call_should_throw_bad_method_call_exception()

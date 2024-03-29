@@ -2,12 +2,12 @@
 
 namespace AndreasElia\Analytics\Http\Middleware;
 
+use AndreasElia\Analytics\Agent;
 use AndreasElia\Analytics\Contracts\SessionProvider;
 use AndreasElia\Analytics\Models\PageView;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use AndreasElia\Analytics\Agent;
 
 class Analytics
 {
@@ -69,11 +69,11 @@ class Analytics
 
         PageView::create(array_merge([
             'session' => $this->getSessionProvider()->get($request),
-            'uri'     => $uri,
-            'source'  => $request->headers->get('referer'),
+            'uri'  => $uri,
+            'source' => $request->headers->get('referer'),
             'country' => $agent->languages()[0] ?? 'en-en',
             'browser' => $agent->browser() ?? null,
-            'device'  => $agent->deviceType(),
+            'device' => $agent->deviceType(),
         ], $utm));
 
         return $response;

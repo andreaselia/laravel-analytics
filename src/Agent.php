@@ -3,8 +3,8 @@
 namespace AndreasElia\Analytics;
 
 use BadMethodCallException;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Detection\MobileDetect;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class Agent extends MobileDetect
 {
@@ -37,7 +37,7 @@ class Agent extends MobileDetect
         'IE' => 'MSIE|IEMobile|MSIEMobile|Trident/[.0-9]+',
         'Netscape' => 'Netscape',
         'Mozilla' => 'Mozilla',
-        'WeChat'  => 'MicroMessenger',
+        'WeChat' => 'MicroMessenger',
     ];
 
     protected static array $additionalProperties = [
@@ -67,7 +67,7 @@ class Agent extends MobileDetect
     {
         static $rules;
 
-        if (!$rules) {
+        if (! $rules) {
             $rules = static::mergeRules(
                 static::$desktopDevices, // NEW
                 static::$phoneDevices,
@@ -144,7 +144,7 @@ class Agent extends MobileDetect
             $acceptLanguage = $this->getHttpHeader('HTTP_ACCEPT_LANGUAGE');
         }
 
-        if (!$acceptLanguage) {
+        if (! $acceptLanguage) {
             return [];
         }
 
@@ -168,7 +168,7 @@ class Agent extends MobileDetect
     protected function findDetectionRulesAgainstUA(array $rules, $userAgent = null)
     {
         // TODO: is this addition right?
-        if (!$userAgent) {
+        if (! $userAgent) {
             $userAgent = $this->getUserAgent();
         }
 
@@ -220,12 +220,12 @@ class Agent extends MobileDetect
             }
         }
 
-        return !$this->isMobile($userAgent, $httpHeaders) && !$this->isTablet($userAgent, $httpHeaders) && !$this->isRobot($userAgent);
+        return ! $this->isMobile($userAgent, $httpHeaders) && ! $this->isTablet($userAgent, $httpHeaders) && ! $this->isRobot($userAgent);
     }
 
     public function isPhone($userAgent = null, $httpHeaders = null): bool
     {
-        return $this->isMobile($userAgent, $httpHeaders) && !$this->isTablet($userAgent, $httpHeaders);
+        return $this->isMobile($userAgent, $httpHeaders) && ! $this->isTablet($userAgent, $httpHeaders);
     }
 
     public function robot($userAgent = null)
@@ -309,7 +309,7 @@ class Agent extends MobileDetect
                 } elseif (is_array($merged[$key])) {
                     $merged[$key][] = $value;
                 } else {
-                    $merged[$key] .= '|' . $value;
+                    $merged[$key] .= '|'.$value;
                 }
             }
         }
