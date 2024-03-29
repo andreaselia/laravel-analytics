@@ -2,10 +2,10 @@
 
 namespace AndreasElia\Analytics\Tests\Unit;
 
-use BadMethodCallException;
-use PHPUnit\Framework\Attributes\Test;
 use AndreasElia\Analytics\Agent;
 use AndreasElia\Analytics\Tests\TestCase;
+use BadMethodCallException;
+use PHPUnit\Framework\Attributes\Test;
 
 class AgentTest extends TestCase
 {

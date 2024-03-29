@@ -2,7 +2,6 @@
 
 namespace AndreasElia\Analytics\Tests\Feature;
 
-use PHPUnit\Framework\Attributes\Test;
 use AndreasElia\Analytics\Http\Middleware\Analytics;
 use AndreasElia\Analytics\Models\PageView;
 use AndreasElia\Analytics\Tests\TestCase;
@@ -10,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 
 class AnalyticsTest extends TestCase
 {

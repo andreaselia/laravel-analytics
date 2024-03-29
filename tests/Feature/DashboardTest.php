@@ -2,10 +2,10 @@
 
 namespace AndreasElia\Analytics\Tests\Feature;
 
-use PHPUnit\Framework\Attributes\Test;
 use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DashboardTest extends TestCase
 {
@@ -44,11 +44,11 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', 'today')
             ->assertViewHas('stats', [
                 [
-                    'key'   => 'Unique Users',
+                    'key' => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key'   => 'Page Views',
+                    'key' => 'Page Views',
                     'value' => 2,
                 ],
             ]);
@@ -61,11 +61,11 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', 'yesterday')
             ->assertViewHas('stats', [
                 [
-                    'key'   => 'Unique Users',
+                    'key' => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key'   => 'Page Views',
+                    'key' => 'Page Views',
                     'value' => 1,
                 ],
             ]);
@@ -78,11 +78,11 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', '1_week')
             ->assertViewHas('stats', [
                 [
-                    'key'   => 'Unique Users',
+                    'key' => 'Unique Users',
                     'value' => 3,
                 ],
                 [
-                    'key'   => 'Page Views',
+                    'key' => 'Page Views',
                     'value' => 5,
                 ],
             ]);
@@ -95,11 +95,11 @@ class DashboardTest extends TestCase
             ->assertViewHas('period', '30_days')
             ->assertViewHas('stats', [
                 [
-                    'key'   => 'Unique Users',
+                    'key' => 'Unique Users',
                     'value' => 4,
                 ],
                 [
-                    'key'   => 'Page Views',
+                    'key' => 'Page Views',
                     'value' => 6,
                 ],
             ]);
@@ -116,11 +116,11 @@ class DashboardTest extends TestCase
             ->assertViewHas('uri', '/test1')
             ->assertViewHas('stats', [
                 [
-                    'key'   => 'Unique Users',
+                    'key' => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key'   => 'Page Views',
+                    'key' => 'Page Views',
                     'value' => 1,
                 ],
             ]);
