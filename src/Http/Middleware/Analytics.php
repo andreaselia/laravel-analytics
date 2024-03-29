@@ -7,7 +7,7 @@ use AndreasElia\Analytics\Models\PageView;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Jenssegers\Agent\Agent;
+use AndreasElia\Analytics\Agent;
 
 class Analytics
 {
