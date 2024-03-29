@@ -2,6 +2,7 @@
 
 namespace AndreasElia\Analytics\Tests\Unit;
 
+use BadMethodCallException;
 use PHPUnit\Framework\Attributes\Test;
 use AndreasElia\Analytics\Agent;
 use AndreasElia\Analytics\Tests\TestCase;
@@ -130,6 +131,7 @@ class AgentTest extends TestCase
         foreach ($this->browsers as $ua => $browser) {
             $agent->setUserAgent($ua);
             $this->assertEquals($browser, $agent->browser(), $ua);
+            // dd($ua, $agent->getUserAgent(), $agent->is($browser), $browser);
             $this->assertTrue($agent->is($browser), $browser);
 
             if (! strpos($browser, ' ')) {
@@ -162,7 +164,7 @@ class AgentTest extends TestCase
     #[Test]
     public function call_should_throw_bad_method_call_exception()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(BadMethodCallException::class);
 
         $agent = new Agent();
         $agent->invalidMethod();
