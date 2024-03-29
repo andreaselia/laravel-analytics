@@ -167,6 +167,11 @@ class Agent extends MobileDetect
 
     protected function findDetectionRulesAgainstUA(array $rules, $userAgent = null)
     {
+        // TODO: is this addition right?
+        if (!$userAgent) {
+            $userAgent = $this->getUserAgent();
+        }
+
         // Loop given rules
         foreach ($rules as $key => $regex) {
             if (empty($regex)) {
@@ -174,7 +179,7 @@ class Agent extends MobileDetect
             }
 
             // Check match
-            if ($userAgent && $this->match($regex, $userAgent)) {
+            if ($this->match($regex, $userAgent)) {
                 return $key ?: reset($this->matchesArray);
             }
         }
@@ -209,7 +214,8 @@ class Agent extends MobileDetect
         // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
         if ($this->getUserAgent() === 'Amazon CloudFront') {
             $cfHeaders = $this->getCfHeaders();
-            if(array_key_exists('HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER', $cfHeaders)) {
+
+            if (array_key_exists('HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER', $cfHeaders)) {
                 return $cfHeaders['HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER'] === 'true';
             }
         }
@@ -239,16 +245,16 @@ class Agent extends MobileDetect
     public function deviceType($userAgent = null, $httpHeaders = null)
     {
         if ($this->isDesktop($userAgent, $httpHeaders)) {
-            return "desktop";
+            return 'desktop';
         } elseif ($this->isPhone($userAgent, $httpHeaders)) {
-            return "phone";
+            return 'phone';
         } elseif ($this->isTablet($userAgent, $httpHeaders)) {
-            return "tablet";
+            return 'tablet';
         } elseif ($this->isRobot($userAgent)) {
-            return "robot";
+            return 'robot';
         }
 
-        return "other";
+        return 'other';
     }
 
     public function version(string $propertyName, string $type = self::VERSION_TYPE_STRING): float|bool|string
@@ -273,7 +279,7 @@ class Agent extends MobileDetect
 
             foreach ($properties[$propertyName] as $propertyMatchString) {
                 if (is_array($propertyMatchString)) {
-                    $propertyMatchString = implode("|", $propertyMatchString);
+                    $propertyMatchString = implode('|', $propertyMatchString);
                 }
 
                 $propertyPattern = str_replace('[VER]', self::VER, $propertyMatchString);
