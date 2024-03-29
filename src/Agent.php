@@ -138,33 +138,6 @@ class Agent extends MobileDetect
         );
     }
 
-    public function languages(string $acceptLanguage = null): array
-    {
-        if ($acceptLanguage === null) {
-            $acceptLanguage = $this->getHttpHeader('HTTP_ACCEPT_LANGUAGE');
-        }
-
-        if (! $acceptLanguage) {
-            return [];
-        }
-
-        $languages = [];
-
-        // Parse accept language string.
-        foreach (explode(',', $acceptLanguage) as $piece) {
-            $parts = explode(';', $piece);
-            $language = strtolower($parts[0]);
-            $priority = empty($parts[1]) ? 1. : floatval(str_replace('q=', '', $parts[1]));
-
-            $languages[$language] = $priority;
-        }
-
-        // Sort languages by priority.
-        arsort($languages);
-
-        return array_keys($languages);
-    }
-
     protected function findDetectionRulesAgainstUA(array $rules, $userAgent = null)
     {
         // TODO: added this user agent setting, wasn't there before though?

@@ -102,28 +102,6 @@ class AgentTest extends TestCase
     ];
 
     #[Test]
-    public function languages()
-    {
-        $agent = new Agent();
-        $agent->setHttpHeaders([
-            'HTTP_ACCEPT_LANGUAGE' => 'nl-NL,nl;q=0.8,en-US;q=0.6,en;q=0.4',
-        ]);
-
-        $this->assertEquals(['nl-nl', 'nl', 'en-us', 'en'], $agent->languages());
-    }
-
-    #[Test]
-    public function languages_sorted()
-    {
-        $agent = new Agent();
-        $agent->setHttpHeaders([
-            'HTTP_ACCEPT_LANGUAGE' => 'en;q=0.4,en-US,nl;q=0.6',
-        ]);
-
-        $this->assertEquals(['en-us', 'nl', 'en'], $agent->languages());
-    }
-
-    #[Test]
     public function operating_systems()
     {
         $agent = new Agent();
