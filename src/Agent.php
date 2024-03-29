@@ -167,18 +167,16 @@ class Agent extends MobileDetect
 
     protected function findDetectionRulesAgainstUA(array $rules, $userAgent = null)
     {
-        // TODO: is this addition right?
+        // TODO: added this user agent setting, wasn't there before though?
         if (! $userAgent) {
             $userAgent = $this->getUserAgent();
         }
 
-        // Loop given rules
         foreach ($rules as $key => $regex) {
             if (empty($regex)) {
                 continue;
             }
 
-            // Check match
             if ($this->match($regex, $userAgent)) {
                 return $key ?: reset($this->matchesArray);
             }
