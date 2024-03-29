@@ -100,7 +100,8 @@ class AgentTest extends TestCase
         'Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1',
     ];
 
-    public function testLanguages()
+    /** @test */
+    public function languages()
     {
         $agent = new Agent();
         $agent->setHttpHeaders([
@@ -110,7 +111,8 @@ class AgentTest extends TestCase
         $this->assertEquals(['nl-nl', 'nl', 'en-us', 'en'], $agent->languages());
     }
 
-    public function testLanguagesSorted()
+    /** @test */
+    public function languages_sorted()
     {
         $agent = new Agent();
         $agent->setHttpHeaders([
@@ -120,7 +122,8 @@ class AgentTest extends TestCase
         $this->assertEquals(['en-us', 'nl', 'en'], $agent->languages());
     }
 
-    public function testOperatingSystems()
+    /** @test */
+    public function operating_systems()
     {
         $agent = new Agent();
 
@@ -136,7 +139,8 @@ class AgentTest extends TestCase
         }
     }
 
-    public function testBrowsers()
+    /** @test */
+    public function browsers()
     {
         $agent = new Agent();
 
@@ -152,7 +156,8 @@ class AgentTest extends TestCase
         }
     }
 
-    public function testRobots()
+    /** @test */
+    public function robots()
     {
         $agent = new Agent();
 
@@ -163,7 +168,8 @@ class AgentTest extends TestCase
         }
     }
 
-    public function testRobotShouldReturnFalse()
+    /** @test */
+    public function robot_should_return_false()
     {
         $agent = new Agent();
 
@@ -171,15 +177,17 @@ class AgentTest extends TestCase
     }
 
     /**
+     * @test
      * @expectedException \BadMethodCallException
      */
-    public function testCallShouldThrowBadMethodCallException()
+    public function call_should_throw_bad_method_call_exception()
     {
         $agent = new Agent();
         $agent->invalidMethod();
     }
 
-    public function testMobileDevices()
+    /** @test */
+    public function mobile_devices()
     {
         $agent = new Agent();
 
@@ -196,7 +204,8 @@ class AgentTest extends TestCase
         }
     }
 
-    public function testDesktopDevices()
+    /** @test */
+    public function desktop_devices()
     {
         $agent = new Agent();
 
@@ -213,7 +222,8 @@ class AgentTest extends TestCase
         }
     }
 
-    public function testVersions()
+    /** @test */
+    public function versions()
     {
         $agent = new Agent();
 
@@ -235,7 +245,8 @@ class AgentTest extends TestCase
         }
     }
 
-    public function testIsMethods()
+    /** @test */
+    public function is_methods()
     {
         $agent = new Agent();
 
