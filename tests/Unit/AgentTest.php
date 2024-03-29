@@ -2,6 +2,7 @@
 
 namespace AndreasElia\Analytics\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use AndreasElia\Analytics\Agent;
 use AndreasElia\Analytics\Tests\TestCase;
 
@@ -100,7 +101,7 @@ class AgentTest extends TestCase
         'Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1',
     ];
 
-    /** @test */
+    #[Test]
     public function languages()
     {
         $agent = new Agent();
@@ -111,7 +112,7 @@ class AgentTest extends TestCase
         $this->assertEquals(['nl-nl', 'nl', 'en-us', 'en'], $agent->languages());
     }
 
-    /** @test */
+    #[Test]
     public function languages_sorted()
     {
         $agent = new Agent();
@@ -122,7 +123,7 @@ class AgentTest extends TestCase
         $this->assertEquals(['en-us', 'nl', 'en'], $agent->languages());
     }
 
-    /** @test */
+    #[Test]
     public function operating_systems()
     {
         $this->markTestSkipped('This test is not yet fixed.');
@@ -141,7 +142,7 @@ class AgentTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function browsers()
     {
         $this->markTestSkipped('This test is not yet fixed.');
@@ -160,7 +161,7 @@ class AgentTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function robots()
     {
         $agent = new Agent();
@@ -172,7 +173,7 @@ class AgentTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function robot_should_return_false()
     {
         $agent = new Agent();
@@ -180,20 +181,16 @@ class AgentTest extends TestCase
         $this->assertFalse($agent->robot());
     }
 
-    /**
-     * @test
-     *
-     * @expectedException \BadMethodCallException
-     */
+    #[Test]
     public function call_should_throw_bad_method_call_exception()
     {
-        $this->markTestSkipped('This test is not yet fixed.');
+        $this->expectException(\BadMethodCallException::class);
 
         $agent = new Agent();
         $agent->invalidMethod();
     }
 
-    /** @test */
+    #[Test]
     public function mobile_devices()
     {
         $this->markTestSkipped('This test is not yet fixed.');
@@ -213,7 +210,7 @@ class AgentTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function desktop_devices()
     {
         $this->markTestSkipped('This test is not yet fixed.');
@@ -233,7 +230,7 @@ class AgentTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function versions()
     {
         $this->markTestSkipped('This test is not yet fixed.');
@@ -258,7 +255,7 @@ class AgentTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function is_methods()
     {
         $agent = new Agent();

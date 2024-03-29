@@ -2,6 +2,7 @@
 
 namespace AndreasElia\Analytics\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,7 +37,7 @@ class DashboardTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_from_today()
     {
         $this->get('analytics')
@@ -53,7 +54,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_from_yesterday()
     {
         $this->get(route('analytics', ['period' => 'yesterday']))
@@ -70,7 +71,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_for_1_week()
     {
         $this->get(route('analytics', ['period' => '1_week']))
@@ -87,7 +88,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_for_30_days()
     {
         $this->get(route('analytics', ['period' => '30_days']))
@@ -104,7 +105,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_for_30_days_filtered_by_uri()
     {
         $this->get(route('analytics', [
