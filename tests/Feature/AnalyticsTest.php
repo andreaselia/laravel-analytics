@@ -171,7 +171,7 @@ class AnalyticsTest extends TestCase
     #[Test]
     public function utm_details_can_be_saved_with_page_views()
     {
-        $this->markTestSkipped('This test is not yet fixed.');
+        // $this->markTestSkipped('This test is not yet fixed.');
 
         $request = Request::create('/test', 'GET', [
             'utm_source' => 'test-source',
@@ -202,7 +202,7 @@ class AnalyticsTest extends TestCase
     #[Test]
     public function utm_details_will_be_trimmed()
     {
-        $this->markTestSkipped('This test is not yet fixed.');
+        // $this->markTestSkipped('This test is not yet fixed.');
 
         $string = Str::random(300);
         $request = Request::create('/test', 'GET', [

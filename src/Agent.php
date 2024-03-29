@@ -8,6 +8,12 @@ use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class Agent extends MobileDetect
 {
+    private const VER = '([\w._\+]+)';
+
+    private const VERSION_TYPE_STRING = 'text';
+
+    private const VERSION_TYPE_FLOAT = 'float';
+
     protected static array $desktopDevices = [
         'Macintosh' => 'Macintosh',
     ];
@@ -63,7 +69,7 @@ class Agent extends MobileDetect
     /** @var CrawlerDetect */
     protected static $crawlerDetect;
 
-    public static function getDetectionRulesExtended(): array
+    public function getRules(): array
     {
         static $rules;
 
@@ -76,21 +82,12 @@ class Agent extends MobileDetect
                 static::$additionalOperatingSystems, // NEW
                 static::$browsers,
                 static::$additionalBrowsers, // NEW
-                static::$utilities
+                // static::$utilities,
             );
         }
 
         return $rules;
     }
-
-    // public function getRules(): array
-    // {
-    //     if ($this->detectionType === static::DETECTION_TYPE_EXTENDED) {
-    //         return static::getDetectionRulesExtended();
-    //     }
-
-    //     return static::getMobileDetectionRules();
-    // }
 
     public function getCrawlerDetect(): CrawlerDetect
     {
@@ -150,6 +147,10 @@ class Agent extends MobileDetect
                 continue;
             }
 
+            if (is_array($regex)) {
+                $regex = implode('|', $regex);
+            }
+
             if ($this->match($regex, $userAgent)) {
                 return $key ?: reset($this->matchesArray);
             }
@@ -174,8 +175,6 @@ class Agent extends MobileDetect
             static::getDesktopDevices(),
             static::getPhoneDevices(),
             static::getTabletDevices(),
-            // TODO: this was removed, is there an alternative? what was it for?
-            // static::getUtilities()
         );
 
         return $this->findDetectionRulesAgainstUA($rules, $userAgent);
@@ -288,17 +287,57 @@ class Agent extends MobileDetect
         return $merged;
     }
 
-    // public function __call(string $name, array $arguments)
-    // {
-    //     // Make sure the name starts with 'is', otherwise
-    //     if (strpos($name, 'is') !== 0) {
-    //         throw new BadMethodCallException("No such method exists: $name");
-    //     }
+    public function is(string $ruleName): bool
+    {
+        if (!$this->hasUserAgent()) {
+            throw new MobileDetectException('No user-agent has been set.');
+        }
 
-    //     // $this->setDetectionType(self::DETECTION_TYPE_EXTENDED);
+        if ($this->isUserAgentEmpty()) {
+            return false;
+        }
 
-    //     $key = substr($name, 2);
+        try {
+            $cacheKey = $this->createCacheKey($ruleName);
+            $cacheItem = $this->cache->get($cacheKey);
 
-    //     return $this->matchUAAgainstKey($key);
-    // }
+            if (!is_null($cacheItem)) {
+                return $cacheItem->get();
+            }
+
+            $result = $this->matchUserAgentWithRule($ruleName);
+
+            $this->cache->set($cacheKey, $result);
+            return $result;
+        } catch (CacheException $e) {
+            throw new MobileDetectException("Cache problem in is(): {$e->getMessage()}");
+        }
+    }
+
+    public function languages(string $acceptLanguage = null): array
+    {
+        if ($acceptLanguage === null) {
+            $acceptLanguage = $this->getHttpHeader('HTTP_ACCEPT_LANGUAGE');
+        }
+
+        if (! $acceptLanguage) {
+            return [];
+        }
+
+        $languages = [];
+
+        // Parse accept language string.
+        foreach (explode(',', $acceptLanguage) as $piece) {
+            $parts = explode(';', $piece);
+            $language = strtolower($parts[0]);
+            $priority = empty($parts[1]) ? 1. : floatval(str_replace('q=', '', $parts[1]));
+
+            $languages[$language] = $priority;
+        }
+
+        // Sort languages by priority.
+        arsort($languages);
+
+        return array_keys($languages);
+    }
 }
