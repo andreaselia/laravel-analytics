@@ -69,7 +69,7 @@ class Analytics
 
         PageView::create(array_merge([
             'session' => $this->getSessionProvider()->get($request),
-            'uri'  => $uri,
+            'uri' => $uri,
             'source' => $request->headers->get('referer'),
             'country' => $agent->languages()[0] ?? 'en-en',
             'browser' => $agent->browser() ?? null,
