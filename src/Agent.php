@@ -2,7 +2,6 @@
 
 namespace AndreasElia\Analytics;
 
-use BadMethodCallException;
 use Detection\MobileDetect;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
@@ -135,11 +134,14 @@ class Agent extends MobileDetect
         );
     }
 
-    protected function findDetectionRulesAgainstUA(array $rules, $userAgent = null)
+    protected function findDetectionRulesAgainstUA(array $rules)
     {
-        // TODO: added this user agent setting, wasn't there before though?
-        if (! $userAgent) {
-            $userAgent = $this->getUserAgent();
+        if (! $this->hasUserAgent()) {
+            throw new MobileDetectException('No valid user-agent has been set.');
+        }
+
+        if ($this->isUserAgentEmpty()) {
+            return false;
         }
 
         foreach ($rules as $key => $regex) {
@@ -151,7 +153,7 @@ class Agent extends MobileDetect
                 $regex = implode('|', $regex);
             }
 
-            if ($this->match($regex, $userAgent)) {
+            if ($this->match($regex, $this->getUserAgent())) {
                 return $key ?: reset($this->matchesArray);
             }
         }
@@ -159,17 +161,17 @@ class Agent extends MobileDetect
         return false;
     }
 
-    public function browser($userAgent = null)
+    public function browser()
     {
-        return $this->findDetectionRulesAgainstUA(static::getBrowsers(), $userAgent);
+        return $this->findDetectionRulesAgainstUA(static::getBrowsers(),);
     }
 
-    public function platform($userAgent = null)
+    public function platform()
     {
-        return $this->findDetectionRulesAgainstUA(static::getPlatforms(), $userAgent);
+        return $this->findDetectionRulesAgainstUA(static::getPlatforms());
     }
 
-    public function device($userAgent = null)
+    public function device()
     {
         $rules = static::mergeRules(
             static::getDesktopDevices(),
@@ -177,11 +179,19 @@ class Agent extends MobileDetect
             static::getTabletDevices(),
         );
 
-        return $this->findDetectionRulesAgainstUA($rules, $userAgent);
+        return $this->findDetectionRulesAgainstUA($rules);
     }
 
-    public function isDesktop($userAgent = null, $httpHeaders = null): bool
+    public function isDesktop(): bool
     {
+        if (! $this->hasUserAgent()) {
+            throw new MobileDetectException('No valid user-agent has been set.');
+        }
+
+        if ($this->isUserAgentEmpty()) {
+            return false;
+        }
+
         // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
         if ($this->getUserAgent() === 'Amazon CloudFront') {
             $cfHeaders = $this->getCfHeaders();
@@ -191,41 +201,41 @@ class Agent extends MobileDetect
             }
         }
 
-        return ! $this->isMobile($userAgent, $httpHeaders) && ! $this->isTablet($userAgent, $httpHeaders) && ! $this->isRobot($userAgent);
+        return ! $this->isMobile() && ! $this->isTablet() && ! $this->isRobot();
     }
 
-    public function isPhone($userAgent = null, $httpHeaders = null): bool
+    public function robot()
     {
-        return $this->isMobile($userAgent, $httpHeaders) && ! $this->isTablet($userAgent, $httpHeaders);
-    }
-
-    public function robot($userAgent = null)
-    {
-        if ($this->getCrawlerDetect()->isCrawler($userAgent ?: $this->userAgent)) {
+        if ($this->getCrawlerDetect()->isCrawler($this->getUserAgent())) {
             return ucfirst($this->getCrawlerDetect()->getMatches());
         }
 
         return false;
     }
 
-    public function isRobot($userAgent = null): bool
+    public function isRobot(): bool
     {
-        return $this->getCrawlerDetect()->isCrawler($userAgent ?: $this->userAgent);
+        return $this->getCrawlerDetect()->isCrawler($this->getUserAgent());
     }
 
-    public function deviceType($userAgent = null, $httpHeaders = null)
+    public function deviceType()
     {
-        if ($this->isDesktop($userAgent, $httpHeaders)) {
-            return 'desktop';
-        } elseif ($this->isPhone($userAgent, $httpHeaders)) {
-            return 'phone';
-        } elseif ($this->isTablet($userAgent, $httpHeaders)) {
-            return 'tablet';
-        } elseif ($this->isRobot($userAgent)) {
+        if ($this->isRobot()) {
             return 'robot';
+        } elseif ($this->isDesktop()) {
+            return 'desktop';
+        } elseif ($this->isPhone()) {
+            return 'phone';
+        } elseif ($this->isTablet()) {
+            return 'tablet';
         }
 
         return 'other';
+    }
+
+    public function isPhone(): bool
+    {
+        return $this->isMobile() && ! $this->isTablet();
     }
 
     public function version(string $propertyName, string $type = self::VERSION_TYPE_STRING): float|bool|string
@@ -289,7 +299,7 @@ class Agent extends MobileDetect
 
     public function is(string $ruleName): bool
     {
-        if (!$this->hasUserAgent()) {
+        if (! $this->hasUserAgent()) {
             throw new MobileDetectException('No user-agent has been set.');
         }
 
@@ -301,7 +311,7 @@ class Agent extends MobileDetect
             $cacheKey = $this->createCacheKey($ruleName);
             $cacheItem = $this->cache->get($cacheKey);
 
-            if (!is_null($cacheItem)) {
+            if (! is_null($cacheItem)) {
                 return $cacheItem->get();
             }
 
