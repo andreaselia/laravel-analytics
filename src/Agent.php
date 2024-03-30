@@ -163,7 +163,7 @@ class Agent extends MobileDetect
 
     public function browser()
     {
-        return $this->findDetectionRulesAgainstUA(static::getBrowsers(),);
+        return $this->findDetectionRulesAgainstUA(static::getBrowsers());
     }
 
     public function platform()
@@ -318,6 +318,7 @@ class Agent extends MobileDetect
             $result = $this->matchUserAgentWithRule($ruleName);
 
             $this->cache->set($cacheKey, $result);
+
             return $result;
         } catch (CacheException $e) {
             throw new MobileDetectException("Cache problem in is(): {$e->getMessage()}");
