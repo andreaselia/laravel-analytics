@@ -124,4 +124,15 @@ class DashboardTest extends TestCase
                 ],
             ]);
     }
+
+    /** @test */
+    public function it_can_view_sources()
+    {
+        $this->get(route('analytics', [
+            'period' => '30_days',
+            'uri' => '/test1',
+        ]))
+            ->assertSeeText('example.com')
+            ->assertSee('<a href="https://example.com" target="_blank" class="hover:underline">', $escaped = false);
+    }
 }
