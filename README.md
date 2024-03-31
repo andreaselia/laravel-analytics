@@ -88,6 +88,23 @@ One example of a custom way to generate the session ID in cookie-less environmen
 
 Feel free to take a look at `AndreasElia\Analytics\RequestSessionProvider` for an example of implementing the `SessionProvider` interface.
 
+### Changing how the timezone for "today" and "yesterday" is determined
+
+Since timestamps are stored using your application's timezone, you may get mixed results depending on when you check views for "today" and "yesterday" and your actual timezone. You can change the relative time for whatever "now" is by setting a callback in a service provider.
+
+```php
+use AndreasElia\Analytics\Models\PageView;
+
+public function boot()
+{
+    PageView::resolveTimezoneUsing(function () {
+        return request()->user()?->timezone;
+    });
+}
+```
+
+You can return a dynamic value like the example above, or a static value. If one isn't determined, it will just fall back to the `config('app.timezone')` value.
+
 ## Laravel Nova
 
 The package comes with a dashboard and metrics for Laravel Nova.
