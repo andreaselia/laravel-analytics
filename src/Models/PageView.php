@@ -16,6 +16,7 @@ class PageView extends Model
         'country',
         'browser',
         'device',
+        'host',
         'utm_source',
         'utm_medium',
         'utm_campaign',
