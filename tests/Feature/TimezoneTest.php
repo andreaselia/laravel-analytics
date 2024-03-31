@@ -39,7 +39,7 @@ class TimezoneTest extends TestCase
         PageView::resolveTimezoneUsing(fn () => 'America/Los_Angeles');
     }
 
-     #[Test]
+    #[Test]
     public function it_can_resolve_timezone()
     {
         $pageView = new PageView();
@@ -50,7 +50,7 @@ class TimezoneTest extends TestCase
         $this->assertEquals(config('app.timezone'), $pageView->getTimezone());
     }
 
-     #[Test]
+    #[Test]
     public function it_can_get_data_from_today()
     {
         $views = PageView::query()
@@ -60,7 +60,7 @@ class TimezoneTest extends TestCase
         $this->assertEquals(2, $views);
     }
 
-     #[Test]
+    #[Test]
     public function it_can_get_data_from_yesterday()
     {
         $views = PageView::query()

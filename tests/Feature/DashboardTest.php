@@ -37,7 +37,7 @@ class DashboardTest extends TestCase
         });
     }
 
-     #[Test]
+    #[Test]
     public function it_can_get_data_from_today()
     {
         $this->get('analytics')
@@ -54,7 +54,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-     #[Test]
+    #[Test]
     public function it_can_get_data_from_yesterday()
     {
         $this->get(route('analytics', ['period' => 'yesterday']))
@@ -71,7 +71,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-     #[Test]
+    #[Test]
     public function it_can_get_data_for_1_week()
     {
         $this->get(route('analytics', ['period' => '1_week']))
@@ -88,7 +88,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-     #[Test]
+    #[Test]
     public function it_can_get_data_for_30_days()
     {
         $this->get(route('analytics', ['period' => '30_days']))
@@ -105,7 +105,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-     #[Test]
+    #[Test]
     public function it_can_get_data_for_30_days_filtered_by_uri()
     {
         $this->get(route('analytics', [
@@ -126,7 +126,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-     #[Test]
+    #[Test]
     public function it_can_view_sources()
     {
         $this->get(route('analytics', [

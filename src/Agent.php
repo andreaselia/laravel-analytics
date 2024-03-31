@@ -232,8 +232,8 @@ class Agent extends Mobile_Detect
     }
 
     /**
-     * @param  string|null  $userAgent deprecated
-     * @param  array  $httpHeaders deprecated
+     * @param  string|null  $userAgent  deprecated
+     * @param  array  $httpHeaders  deprecated
      * @return bool
      */
     public function isDesktop($userAgent = null, $httpHeaders = null)
@@ -251,8 +251,8 @@ class Agent extends Mobile_Detect
     }
 
     /**
-     * @param  string|null  $userAgent deprecated
-     * @param  array  $httpHeaders deprecated
+     * @param  string|null  $userAgent  deprecated
+     * @param  array  $httpHeaders  deprecated
      * @return bool
      */
     public function isPhone($userAgent = null, $httpHeaders = null)
@@ -358,7 +358,7 @@ class Agent extends Mobile_Detect
                 } elseif (is_array($merged[$key])) {
                     $merged[$key][] = $value;
                 } else {
-                    $merged[$key] .= '|' . $value;
+                    $merged[$key] .= '|'.$value;
                 }
             }
         }
