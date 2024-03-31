@@ -317,7 +317,6 @@ class Agent extends Mobile_Detect
 
         // Check if the property exists in the properties array.
         if (true === isset($properties[$propertyName])) {
-
             // Prepare the pattern to be matched.
             // Make sure we always deal with an array (string is converted).
             $properties[$propertyName] = (array) $properties[$propertyName];

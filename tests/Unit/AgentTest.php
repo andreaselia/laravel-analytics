@@ -2,8 +2,8 @@
 
 namespace AndreasElia\Analytics\Tests\Unit;
 
-use AndreasElia\Analytics\Tests\TestCase;
 use AndreasElia\Analytics\Agent;
+use AndreasElia\Analytics\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 class AgentTest extends TestCase
