@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 
 class AnalyticsTest extends TestCase
 {
@@ -21,7 +22,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function a_page_view_can_be_tracked()
     {
         $request = Request::create('/test', 'GET');
@@ -39,7 +40,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function page_views_arent_tracked_when_not_enabled()
     {
         Config::set('analytics.enabled', false);
@@ -54,7 +55,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function a_page_view_can_be_masked()
     {
         $request = Request::create('/test/123', 'GET');
@@ -72,7 +73,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function a_page_view_can_be_excluded()
     {
         $request = Request::create('/analytics/123', 'GET');
@@ -86,7 +87,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function methods_can_be_excluded()
     {
         Config::set('analytics.ignoreMethods', ['POST']);
@@ -101,7 +102,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function a_page_view_from_robot_can_be_tracked_if_enabled()
     {
         Config::set('analytics.ignoreRobots', false);
@@ -122,7 +123,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function a_page_view_from_robot_is_not_tracked_if_enabled()
     {
         Config::set('analytics.ignoreRobots', true);
@@ -142,7 +143,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function a_page_view_from_an_excluded_ip_is_not_tracked_if_enabled()
     {
         Config::set('analytics.ignoredIPs', ['127.0.0.2']);
@@ -161,7 +162,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function utm_details_can_be_saved_with_page_views()
     {
         $request = Request::create('/test', 'GET', [
@@ -190,7 +191,7 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    /** @test */
+     #[Test]
     public function utm_details_will_be_trimmed()
     {
         $string = Str::random(300);

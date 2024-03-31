@@ -7,6 +7,7 @@ use AndreasElia\Analytics\Models\PageView;
 use AndreasElia\Analytics\Tests\TestCase;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class TimezoneTest extends TestCase
 {
@@ -38,7 +39,7 @@ class TimezoneTest extends TestCase
         PageView::resolveTimezoneUsing(fn () => 'America/Los_Angeles');
     }
 
-    /** @test */
+     #[Test]
     public function it_can_resolve_timezone()
     {
         $pageView = new PageView();
@@ -49,7 +50,7 @@ class TimezoneTest extends TestCase
         $this->assertEquals(config('app.timezone'), $pageView->getTimezone());
     }
 
-    /** @test */
+     #[Test]
     public function it_can_get_data_from_today()
     {
         $views = PageView::query()
@@ -59,7 +60,7 @@ class TimezoneTest extends TestCase
         $this->assertEquals(2, $views);
     }
 
-    /** @test */
+     #[Test]
     public function it_can_get_data_from_yesterday()
     {
         $views = PageView::query()
