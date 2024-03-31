@@ -13,7 +13,7 @@
                     <div class="flex items-center">
                         <img class="w-4 h-4 mr-3" src="https://www.google.com/s2/favicons?domain={{ urlencode($source->page) }}" alt="" />
 
-                        <a href="{{ $source->page }}" target="_blank" class="hover:underline">
+                        <a href="https://{{ $source->page }}" target="_blank" class="hover:underline">
                             {{ $source->page }}
                         </a>
                     </div>
