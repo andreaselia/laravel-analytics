@@ -200,7 +200,7 @@ class Agent extends MobileDetect
                 return $cfHeaders['HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER'] === 'true';
             }
         }
-        dd($this->isMobile(), $this->getUserAgent());
+
         return ! $this->isMobile() && ! $this->isTablet() && ! $this->isRobot();
     }
 

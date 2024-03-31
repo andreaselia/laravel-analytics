@@ -186,14 +186,14 @@ class AgentTest extends TestCase
     #[Test]
     public function desktop_devices()
     {
-        // $this->markTestSkipped('This test is not yet fixed.');
+        $this->markTestSkipped('Broken: https://github.com/serbanghita/Mobile-Detect/issues/939');
 
         $agent = new Agent();
 
         foreach ($this->desktopDevices as $ua => $device) {
             $agent->setUserAgent($ua);
             $this->assertEquals($device, $agent->device(), $ua);
-            // $this->assertFalse($agent->isMobile(), $ua);
+            $this->assertFalse($agent->isMobile(), $ua);
             $this->assertTrue($agent->isDesktop(), $ua);
 
             if (! strpos($device, ' ')) {
@@ -229,7 +229,7 @@ class AgentTest extends TestCase
     #[Test]
     public function is_methods()
     {
-        $this->markTestSkipped('This test is not yet fixed.');
+        $this->markTestSkipped('Broken: https://github.com/serbanghita/Mobile-Detect/issues/939');
 
         $agent = new Agent();
 
