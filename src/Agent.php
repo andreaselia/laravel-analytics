@@ -2,18 +2,16 @@
 
 namespace AndreasElia\Analytics;
 
-use BadMethodCallException;
+use Closure;
+use Detection\MobileDetect;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Mobile_Detect;
 
-class Agent extends Mobile_Detect
+/**
+ * @copyright Originally created by Jens Segers: https://github.com/jenssegers/agent
+ */
+class Agent extends MobileDetect
 {
-    /** @var array */
-    protected static $desktopDevices = [
-        'Macintosh' => 'Macintosh',
-    ];
-
-    /** @var array */
+    /** @var array<string, string> */
     protected static $additionalOperatingSystems = [
         'Windows' => 'Windows',
         'Windows NT' => 'Windows NT',
@@ -26,7 +24,7 @@ class Agent extends Mobile_Detect
         'ChromeOS' => 'CrOS',
     ];
 
-    /** @var array */
+    /** @var array<string, string> */
     protected static $additionalBrowsers = [
         'Opera Mini' => 'Opera Mini',
         'Opera' => 'Opera|OPR',
@@ -43,112 +41,101 @@ class Agent extends Mobile_Detect
         'WeChat' => 'MicroMessenger',
     ];
 
-    /** @var array */
-    protected static $additionalProperties = [
-        // Operating systems
-        'Windows' => 'Windows NT [VER]',
-        'Windows NT' => 'Windows NT [VER]',
-        'OS X' => 'OS X [VER]',
-        'BlackBerryOS' => ['BlackBerry[\w]+/[VER]', 'BlackBerry.*Version/[VER]', 'Version/[VER]'],
-        'AndroidOS' => 'Android [VER]',
-        'ChromeOS' => 'CrOS x86_64 [VER]',
-
-        // Browsers
-        'Opera Mini' => 'Opera Mini/[VER]',
-        'Opera' => [' OPR/[VER]', 'Opera Mini/[VER]', 'Version/[VER]', 'Opera [VER]'],
-        'Netscape' => 'Netscape/[VER]',
-        'Mozilla' => 'rv:[VER]',
-        'IE' => ['IEMobile/[VER];', 'IEMobile [VER]', 'MSIE [VER];', 'rv:[VER]'],
-        'Edge' => ['Edge/[VER]', 'Edg/[VER]'],
-        'Vivaldi' => 'Vivaldi/[VER]',
-        'Coc Coc' => 'coc_coc_browser/[VER]',
-    ];
-
     /** @var CrawlerDetect */
     protected static $crawlerDetect;
 
-    /** @return array */
-    public static function getDetectionRulesExtended()
-    {
-        static $rules;
+    /** @var array<string, mixed> */
+    protected $store = [];
 
-        if (! $rules) {
-            $rules = static::mergeRules(
-                static::$desktopDevices, // NEW
-                static::$phoneDevices,
-                static::$tabletDevices,
-                static::$operatingSystems,
-                static::$additionalOperatingSystems, // NEW
-                static::$browsers,
-                static::$additionalBrowsers, // NEW
-                static::$utilities
+    /** @return string|null */
+    public function platform()
+    {
+        return $this->retrieveUsingCacheOrResolve('analytics.platform', function () {
+            return $this->findDetectionRulesAgainstUserAgent(
+                $this->mergeRules(MobileDetect::getOperatingSystems(), static::$additionalOperatingSystems)
             );
+        });
+    }
+
+    /** @return string|null */
+    public function browser()
+    {
+        return $this->retrieveUsingCacheOrResolve('analytics.browser', function () {
+            return $this->findDetectionRulesAgainstUserAgent(
+                $this->mergeRules(static::$additionalBrowsers, MobileDetect::getBrowsers())
+            );
+        });
+    }
+
+    /** @return bool */
+    public function isDesktop()
+    {
+        return $this->retrieveUsingCacheOrResolve('analytics.desktop', function () {
+            // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
+            if (
+                $this->getUserAgent() === static::$cloudFrontUA
+                && $this->getHttpHeader('HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER') === 'true'
+            ) {
+                return true;
+            }
+
+            return ! $this->isMobile() && ! $this->isTablet();
+        });
+    }
+
+    /** @return string|null */
+    protected function findDetectionRulesAgainstUserAgent(array $rules)
+    {
+        $userAgent = $this->getUserAgent();
+
+        foreach ($rules as $key => $regex) {
+            if (empty($regex)) {
+                continue;
+            }
+
+            if ($this->match($regex, $userAgent)) {
+                return $key ?: reset($this->matchesArray);
+            }
         }
 
-        return $rules;
+        return null;
     }
 
-    public function getRules()
+    /** @return mixed */
+    protected function retrieveUsingCacheOrResolve(string $key, Closure $callback)
     {
-        if ($this->detectionType === static::DETECTION_TYPE_EXTENDED) {
-            return static::getDetectionRulesExtended();
+        $cacheKey = $this->createCacheKey($key);
+
+        if (! is_null($cacheItem = $this->store[$cacheKey] ?? null)) {
+            return $cacheItem;
         }
 
-        return static::getMobileDetectionRules();
+        return tap(call_user_func($callback), function ($result) use ($cacheKey) {
+            $this->store[$cacheKey] = $result;
+        });
     }
 
-    /** @return CrawlerDetect */
-    public function getCrawlerDetect()
+    /** @return array<string, string> */
+    protected function mergeRules(...$all)
     {
-        if (static::$crawlerDetect === null) {
-            static::$crawlerDetect = new CrawlerDetect();
+        $merged = [];
+
+        foreach ($all as $rules) {
+            foreach ($rules as $key => $value) {
+                if (empty($merged[$key])) {
+                    $merged[$key] = $value;
+                } elseif (is_array($merged[$key])) {
+                    $merged[$key][] = $value;
+                } else {
+                    $merged[$key] .= '|'.$value;
+                }
+            }
         }
 
-        return static::$crawlerDetect;
+        return $merged;
     }
 
-    public static function getBrowsers()
-    {
-        return static::mergeRules(
-            static::$additionalBrowsers,
-            static::$browsers
-        );
-    }
-
-    public static function getOperatingSystems()
-    {
-        return static::mergeRules(
-            static::$operatingSystems,
-            static::$additionalOperatingSystems
-        );
-    }
-
-    public static function getPlatforms()
-    {
-        return static::mergeRules(
-            static::$operatingSystems,
-            static::$additionalOperatingSystems
-        );
-    }
-
-    public static function getDesktopDevices()
-    {
-        return static::$desktopDevices;
-    }
-
-    public static function getProperties()
-    {
-        return static::mergeRules(
-            static::$additionalProperties,
-            static::$properties
-        );
-    }
-
-    /**
-     * @param  string  $acceptLanguage
-     * @return array
-     */
-    public function languages($acceptLanguage = null)
+    public function languages(string $acceptLanguage = null): array
     {
         if ($acceptLanguage === null) {
             $acceptLanguage = $this->getHttpHeader('HTTP_ACCEPT_LANGUAGE');
@@ -175,208 +162,33 @@ class Agent extends Mobile_Detect
         return array_keys($languages);
     }
 
-    /**
-     * @param  array  $rules
-     * @param  string|null  $userAgent
-     * @return string|bool
-     */
-    protected function findDetectionRulesAgainstUA(array $rules, $userAgent = null)
-    {
-        // Loop given rules
-        foreach ($rules as $key => $regex) {
-            if (empty($regex)) {
-                continue;
-            }
 
-            // Check match
-            if ($this->match($regex, $userAgent)) {
-                return $key ?: reset($this->matchesArray);
-            }
+    public function getCrawlerDetect(): CrawlerDetect
+    {
+        if (static::$crawlerDetect === null) {
+            static::$crawlerDetect = new CrawlerDetect();
         }
 
-        return false;
+        return static::$crawlerDetect;
     }
 
-    /**
-     * @param  string|null  $userAgent
-     * @return string|bool
-     */
-    public function browser($userAgent = null)
+    public function isRobot(): bool
     {
-        return $this->findDetectionRulesAgainstUA(static::getBrowsers(), $userAgent);
+        return $this->getCrawlerDetect()->isCrawler($this->getUserAgent());
     }
 
-    /**
-     * @param  string|null  $userAgent
-     * @return string|bool
-     */
-    public function platform($userAgent = null)
+    public function deviceType()
     {
-        return $this->findDetectionRulesAgainstUA(static::getPlatforms(), $userAgent);
-    }
-
-    /**
-     * @param  string|null  $userAgent
-     * @return string|bool
-     */
-    public function device($userAgent = null)
-    {
-        $rules = static::mergeRules(
-            static::getDesktopDevices(),
-            static::getPhoneDevices(),
-            static::getTabletDevices(),
-            static::getUtilities()
-        );
-
-        return $this->findDetectionRulesAgainstUA($rules, $userAgent);
-    }
-
-    /**
-     * @param  string|null  $userAgent  deprecated
-     * @param  array  $httpHeaders  deprecated
-     * @return bool
-     */
-    public function isDesktop($userAgent = null, $httpHeaders = null)
-    {
-        // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
-        if ($this->getUserAgent() === 'Amazon CloudFront') {
-            $cfHeaders = $this->getCfHeaders();
-
-            if (array_key_exists('HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER', $cfHeaders)) {
-                return $cfHeaders['HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER'] === 'true';
-            }
-        }
-
-        return ! $this->isMobile($userAgent, $httpHeaders) && ! $this->isTablet($userAgent, $httpHeaders) && ! $this->isRobot($userAgent);
-    }
-
-    /**
-     * @param  string|null  $userAgent  deprecated
-     * @param  array  $httpHeaders  deprecated
-     * @return bool
-     */
-    public function isPhone($userAgent = null, $httpHeaders = null)
-    {
-        return $this->isMobile($userAgent, $httpHeaders) && ! $this->isTablet($userAgent, $httpHeaders);
-    }
-
-    /**
-     * @param  string|null  $userAgent
-     * @return string|bool
-     */
-    public function robot($userAgent = null)
-    {
-        if ($this->getCrawlerDetect()->isCrawler($userAgent ?: $this->userAgent)) {
-            return ucfirst($this->getCrawlerDetect()->getMatches());
-        }
-
-        return false;
-    }
-
-    /**
-     * @param  string|null  $userAgent
-     * @return bool
-     */
-    public function isRobot($userAgent = null)
-    {
-        return $this->getCrawlerDetect()->isCrawler($userAgent ?: $this->userAgent);
-    }
-
-    /**
-     * @param  null  $userAgent
-     * @param  null  $httpHeaders
-     * @return string
-     */
-    public function deviceType($userAgent = null, $httpHeaders = null)
-    {
-        if ($this->isDesktop($userAgent, $httpHeaders)) {
-            return 'desktop';
-        } elseif ($this->isPhone($userAgent, $httpHeaders)) {
-            return 'phone';
-        } elseif ($this->isTablet($userAgent, $httpHeaders)) {
-            return 'tablet';
-        } elseif ($this->isRobot($userAgent)) {
+        if ($this->isRobot()) {
             return 'robot';
+        } elseif ($this->isDesktop()) {
+            return 'desktop';
+        } elseif ($this->isPhone()) {
+            return 'phone';
+        } elseif ($this->isTablet()) {
+            return 'tablet';
         }
 
         return 'other';
-    }
-
-    public function version($propertyName, $type = self::VERSION_TYPE_STRING)
-    {
-        if (empty($propertyName)) {
-            return false;
-        }
-
-        // set the $type to the default if we don't recognize the type
-        if ($type !== self::VERSION_TYPE_STRING && $type !== self::VERSION_TYPE_FLOAT) {
-            $type = self::VERSION_TYPE_STRING;
-        }
-
-        $properties = self::getProperties();
-
-        // Check if the property exists in the properties array.
-        if (true === isset($properties[$propertyName])) {
-            // Prepare the pattern to be matched.
-            // Make sure we always deal with an array (string is converted).
-            $properties[$propertyName] = (array) $properties[$propertyName];
-
-            foreach ($properties[$propertyName] as $propertyMatchString) {
-                if (is_array($propertyMatchString)) {
-                    $propertyMatchString = implode('|', $propertyMatchString);
-                }
-
-                $propertyPattern = str_replace('[VER]', self::VER, $propertyMatchString);
-
-                // Identify and extract the version.
-                preg_match(sprintf('#%s#is', $propertyPattern), $this->userAgent, $match);
-
-                if (false === empty($match[1])) {
-                    $version = ($type === self::VERSION_TYPE_FLOAT ? $this->prepareVersionNo($match[1]) : $match[1]);
-
-                    return $version;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param  array  $all
-     * @return array
-     */
-    protected static function mergeRules(...$all)
-    {
-        $merged = [];
-
-        foreach ($all as $rules) {
-            foreach ($rules as $key => $value) {
-                if (empty($merged[$key])) {
-                    $merged[$key] = $value;
-                } elseif (is_array($merged[$key])) {
-                    $merged[$key][] = $value;
-                } else {
-                    $merged[$key] .= '|'.$value;
-                }
-            }
-        }
-
-        return $merged;
-    }
-
-    /** @inheritdoc */
-    public function __call($name, $arguments)
-    {
-        // Make sure the name starts with 'is', otherwise
-        if (strpos($name, 'is') !== 0) {
-            throw new BadMethodCallException("No such method exists: $name");
-        }
-
-        $this->setDetectionType(self::DETECTION_TYPE_EXTENDED);
-
-        $key = substr($name, 2);
-
-        return $this->matchUAAgainstKey($key);
     }
 }
