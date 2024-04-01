@@ -27,6 +27,8 @@ class Analytics
             return $response;
         }
 
+        $headers = collect($request->header())->map(fn ($item) => $item[0]);
+
         $agent = new Agent();
         $agent->setUserAgent($request->headers->get('user-agent'));
         $headers = collect($request->header())->map(fn ($item) => $item[0]);
