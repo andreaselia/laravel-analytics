@@ -5,7 +5,6 @@ namespace AndreasElia\Analytics\Tests\Feature;
 use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\Attributes\Test;
 
 class DashboardTest extends TestCase
 {
@@ -37,75 +36,75 @@ class DashboardTest extends TestCase
         });
     }
 
-    #[Test]
+    /** @test */
     public function it_can_get_data_from_today()
     {
         $this->get('analytics')
             ->assertViewHas('period', 'today')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 2,
                 ],
             ]);
     }
 
-    #[Test]
+    /** @test */
     public function it_can_get_data_from_yesterday()
     {
         $this->get(route('analytics', ['period' => 'yesterday']))
             ->assertViewHas('period', 'yesterday')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 1,
                 ],
             ]);
     }
 
-    #[Test]
+    /** @test */
     public function it_can_get_data_for_1_week()
     {
         $this->get(route('analytics', ['period' => '1_week']))
             ->assertViewHas('period', '1_week')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 3,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 5,
                 ],
             ]);
     }
 
-    #[Test]
+    /** @test */
     public function it_can_get_data_for_30_days()
     {
         $this->get(route('analytics', ['period' => '30_days']))
             ->assertViewHas('period', '30_days')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 4,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 6,
                 ],
             ]);
     }
 
-    #[Test]
+    /** @test */
     public function it_can_get_data_for_30_days_filtered_by_uri()
     {
         $this->get(route('analytics', [
@@ -116,17 +115,17 @@ class DashboardTest extends TestCase
             ->assertViewHas('uri', '/test1')
             ->assertViewHas('stats', [
                 [
-                    'key' => 'Unique Users',
+                    'key'   => 'Unique Users',
                     'value' => 1,
                 ],
                 [
-                    'key' => 'Page Views',
+                    'key'   => 'Page Views',
                     'value' => 1,
                 ],
             ]);
     }
 
-    #[Test]
+    /** @test */
     public function it_can_view_sources()
     {
         $this->get(route('analytics', [

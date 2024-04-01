@@ -24,26 +24,26 @@ class HomeController extends Controller
         ];
 
         return view('analytics::dashboard', [
-            'period' => $period,
-            'uri' => $uri,
+            'period'  => $period,
+            'uri'     => $uri,
             'periods' => $this->periods(),
-            'stats' => $this->stats(),
-            'pages' => $this->pages(),
+            'stats'   => $this->stats(),
+            'pages'   => $this->pages(),
             'sources' => $this->sources(),
-            'users' => $this->users(),
+            'users'   => $this->users(),
             'devices' => $this->devices(),
-            'utm' => $this->utm(),
+            'utm'     => $this->utm(),
         ]);
     }
 
     protected function periods(): array
     {
         return [
-            'today' => 'Today',
+            'today'     => 'Today',
             'yesterday' => 'Yesterday',
-            '1_week' => 'Last 7 days',
-            '30_days' => 'Last 30 days',
-            '6_months' => 'Last 6 months',
+            '1_week'    => 'Last 7 days',
+            '30_days'   => 'Last 30 days',
+            '6_months'  => 'Last 6 months',
             '12_months' => 'Last 12 months',
         ];
     }
@@ -52,7 +52,7 @@ class HomeController extends Controller
     {
         return [
             [
-                'key' => 'Unique Users',
+                'key'   => 'Unique Users',
                 'value' => PageView::query()
                     ->scopes($this->scopes)
                     ->groupBy('session')
@@ -60,7 +60,7 @@ class HomeController extends Controller
                     ->count(),
             ],
             [
-                'key' => 'Page Views',
+                'key'   => 'Page Views',
                 'value' => PageView::query()
                     ->scopes($this->scopes)
                     ->count(),
@@ -118,7 +118,7 @@ class HomeController extends Controller
             'utm_term',
             'utm_content',
         ])->mapWithKeys(fn (string $key) => [$key => [
-            'key' => $key,
+            'key'   => $key,
             'items' => PageView::query()
                 ->select([$key, DB::raw('count(*) as count')])
                 ->scopes($this->scopes)
