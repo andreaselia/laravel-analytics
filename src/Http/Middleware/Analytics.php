@@ -30,9 +30,8 @@ class Analytics
         $headers = collect($request->header())->map(fn ($item) => $item[0]);
 
         $agent = new Agent();
-        if (isset($headers['user-agent'])) {
-            $agent->setUserAgent($headers['user-agent']);
-        }
+        $agent->setUserAgent($request->headers->get('user-agent'));
+        $headers = collect($request->header())->map(fn ($item) => $item[0]);
         $agent->setHttpHeaders($headers->toArray());
 
         if (config('analytics.ignoreRobots', false) && $agent->isRobot()) {
