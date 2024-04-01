@@ -2,6 +2,8 @@
 
 namespace AndreasElia\Analytics\Models;
 
+use Carbon\CarbonImmutable;
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 
 class PageView extends Model
@@ -14,12 +16,20 @@ class PageView extends Model
         'country',
         'browser',
         'device',
+        'host',
         'utm_source',
         'utm_medium',
         'utm_campaign',
         'utm_term',
         'utm_content',
     ];
+
+    protected static Closure $timezoneResolver;
+
+    public static function resolveTimezoneUsing(Closure $callback): void
+    {
+        static::$timezoneResolver = $callback;
+    }
 
     public function setSourceAttribute($value): void
     {
@@ -40,17 +50,20 @@ class PageView extends Model
 
     public function scopeFilter($query, $period = 'today')
     {
+        $today = CarbonImmutable::today($this->getTimezone())
+            ->setTimezone(config('app.timezone'));
+
         if (! in_array($period, ['today', 'yesterday'])) {
             [$interval, $unit] = explode('_', $period);
 
-            return $query->where('created_at', '>=', now()->sub($unit, $interval));
+            return $query->where('created_at', '>=', $today->sub($unit, $interval));
         }
 
         if ($period === 'yesterday') {
-            return $query->whereDate('created_at', today()->subDay()->toDateString());
+            return $query->whereBetween('created_at', [$today->subDay(), $today]);
         }
 
-        return $query->whereDate('created_at', today());
+        return $query->where('created_at', '>=', $today);
     }
 
     public function scopeUri($query, $uri = null)
@@ -58,5 +71,18 @@ class PageView extends Model
         $query->when($uri, function ($query, string $uri) {
             $query->where('uri', $uri);
         });
+    }
+
+    public function getTimezone(): string
+    {
+        $timezone = null;
+
+        if (isset(static::$timezoneResolver) && is_callable(static::$timezoneResolver)) {
+            $timezone = call_user_func(static::$timezoneResolver);
+        }
+
+        return empty($timezone)
+            ? config('app.timezone')
+            : $timezone;
     }
 }
