@@ -4,8 +4,8 @@ namespace AndreasElia\Analytics\Tests\Unit;
 
 use AndreasElia\Analytics\Agent;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @copyright Originally created by Jens Segers: https://github.com/jenssegers/agent

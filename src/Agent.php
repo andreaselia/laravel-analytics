@@ -162,7 +162,6 @@ class Agent extends MobileDetect
         return array_keys($languages);
     }
 
-
     public function getCrawlerDetect(): CrawlerDetect
     {
         if (static::$crawlerDetect === null) {
