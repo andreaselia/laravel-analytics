@@ -8,6 +8,11 @@ use Illuminate\Support\ServiceProvider;
 
 class AnalyticsServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any package services.
+     *
+     * @return void
+     */
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
@@ -40,12 +45,17 @@ class AnalyticsServiceProvider extends ServiceProvider
     protected function routeConfig(): array
     {
         return [
-            'namespace' => 'AndreasElia\Analytics\Http\Controllers',
-            'prefix' => config('analytics.prefix'),
+            'namespace'  => 'AndreasElia\Analytics\Http\Controllers',
+            'prefix'     => config('analytics.prefix'),
             'middleware' => config('analytics.middleware'),
         ];
     }
 
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(

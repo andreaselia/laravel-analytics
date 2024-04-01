@@ -13,11 +13,11 @@ class PageViewFactory extends Factory
     {
         return [
             'session' => $this->faker->unique()->md5(),
-            'uri' => '/'.$this->faker->unique()->word(),
-            'source' => 'example.com',
+            'uri'     => '/'.$this->faker->unique()->word(),
+            'source'  => 'example.com',
             'country' => 'us',
             'browser' => 'chrome',
-            'device' => 'desktop',
+            'device'  => 'desktop',
         ];
     }
 }

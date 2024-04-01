@@ -21,8 +21,7 @@
         "illuminate/collections": "^8.0|^9.0|^10.0|^11.0",
         "illuminate/http": "^8.0|^9.0|^10.0|^11.0",
         "illuminate/view": "^8.0|^9.0|^10.0|^11.0",
-        "mobiledetect/mobiledetectlib": "^2.7.6",
-        "jaybizzle/crawler-detect": "^1.2"
+        "jenssegers/agent": "^2.6"
     },
     "autoload": {
         "psr-4": {
