@@ -57,6 +57,24 @@ return [
         // 'OPTIONS', 'POST',
     ],
 
+    /**
+     * Columns that won't be tracked.
+     *
+     * List the columns you want to ignore from the page view tracking.
+     */
+    'ignoredColumns' => [
+        // 'source',
+        // 'country',
+        // 'browser',
+        // 'device',
+        // 'host',
+        // 'utm_source',
+        // 'utm_medium',
+        // 'utm_campaign',
+        // 'utm_term',
+        // 'utm_content',
+    ],
+
     'session' => [
         'provider' => \AndreasElia\Analytics\RequestSessionProvider::class,
     ],

@@ -6,6 +6,7 @@ use AndreasElia\Analytics\Contracts\SessionProvider;
 use AndreasElia\Analytics\Models\PageView;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Jenssegers\Agent\Agent;
 
@@ -56,18 +57,7 @@ class Analytics
             }
         }
 
-        $utm = array_map(
-            fn ($item) => substr($item, 0, 255),
-            $request->only([
-                'utm_source',
-                'utm_medium',
-                'utm_campaign',
-                'utm_term',
-                'utm_content',
-            ])
-        );
-
-        PageView::create(array_merge([
+        $attributes = [
             'session' => $this->getSessionProvider()->get($request),
             'uri' => $uri,
             'source' => $request->headers->get('referer'),
@@ -75,7 +65,19 @@ class Analytics
             'browser' => $agent->browser() ?? null,
             'device' => $agent->deviceType(),
             'host' => $request->getHost(),
-        ], $utm));
+            ...array_map(
+                fn ($item) => substr($item, 0, 255),
+                $request->only([
+                    'utm_source',
+                    'utm_medium',
+                    'utm_campaign',
+                    'utm_term',
+                    'utm_content',
+                ])
+            ),
+        ];
+
+        PageView::create(Arr::except($attributes, config('analytics.ignoredColumns', [])));
 
         return $response;
     }

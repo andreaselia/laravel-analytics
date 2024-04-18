@@ -215,4 +215,39 @@ class AnalyticsTest extends TestCase
             'utm_content' => null,
         ]);
     }
+
+    public function test_it_can_ignore_some_columns_when_saving()
+    {
+        $request = Request::create('/test', 'GET', [
+            'utm_source' => 'test-source',
+            'utm_medium' => 'test-medium',
+            'utm_campaign' => 'test-campaign',
+            'utm_term' => 'test-term',
+            'utm_content' => 'test-content',
+        ]);
+        $request->setLaravelSession($this->app['session']->driver());
+        config()->set('analytics.ignoredColumns', [
+            'device',
+            'utm_source',
+            'utm_term',
+            'host',
+        ]);
+
+        (new Analytics())->handle($request, function ($req) {
+            $this->assertEquals('test', $req->path());
+            $this->assertEquals('GET', $req->method());
+        });
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'device' => null,
+            'host' => null,
+            'utm_source' => null,
+            'utm_medium' => 'test-medium',
+            'utm_campaign' => 'test-campaign',
+            'utm_term' => null,
+            'utm_content' => 'test-content',
+        ]);
+    }
 }
