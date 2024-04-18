@@ -22,7 +22,7 @@
         "illuminate/http": "^8.0|^9.0|^10.0|^11.0",
         "illuminate/view": "^8.0|^9.0|^10.0|^11.0",
         "jenssegers/agent": "^2.6",
-        "doctrine/dbal": "^4.0"
+        "doctrine/dbal": "^3.0"
     },
     "autoload": {
         "psr-4": {
