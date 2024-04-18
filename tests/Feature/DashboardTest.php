@@ -127,6 +127,18 @@ class DashboardTest extends TestCase
             'uri' => '/test1',
         ]))
             ->assertSeeText('example.com')
+            ->assertSee('<h3 class="text-lg font-medium leading-6 text-gray-900">Sources</h3>', false)
             ->assertSee('<a href="https://example.com" target="_blank" class="hover:underline">', $escaped = false);
+    }
+
+    public function test_it_wont_show_sources_if_ignored()
+    {
+        config()->set('analytics.ignoredColumns', ['source']);
+        $this->get(route('analytics', [
+            'period' => '30_days',
+            'uri' => '/test1',
+        ]))
+            ->assertViewHas('sources', collect())
+            ->assertDontSee('<h3 class="text-lg font-medium leading-6 text-gray-900">Sources</h3>', false);
     }
 }
