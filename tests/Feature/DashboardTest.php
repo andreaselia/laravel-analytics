@@ -36,8 +36,7 @@ class DashboardTest extends TestCase
         });
     }
 
-    /** @test */
-    public function it_can_get_data_from_today()
+    public function test_it_can_get_data_from_today()
     {
         $this->get('analytics')
             ->assertViewHas('period', 'today')
@@ -53,8 +52,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_can_get_data_from_yesterday()
+    public function test_it_can_get_data_from_yesterday()
     {
         $this->get(route('analytics', ['period' => 'yesterday']))
             ->assertViewHas('period', 'yesterday')
@@ -70,8 +68,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_can_get_data_for_1_week()
+    public function test_it_can_get_data_for_1_week()
     {
         $this->get(route('analytics', ['period' => '1_week']))
             ->assertViewHas('period', '1_week')
@@ -87,8 +84,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_can_get_data_for_30_days()
+    public function test_it_can_get_data_for_30_days()
     {
         $this->get(route('analytics', ['period' => '30_days']))
             ->assertViewHas('period', '30_days')
@@ -104,8 +100,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_can_get_data_for_30_days_filtered_by_uri()
+    public function test_it_can_get_data_for_30_days_filtered_by_uri()
     {
         $this->get(route('analytics', [
             'period' => '30_days',
@@ -125,8 +120,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_can_view_sources()
+    public function test_it_can_view_sources()
     {
         $this->get(route('analytics', [
             'period' => '30_days',
