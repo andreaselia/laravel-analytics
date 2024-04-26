@@ -5,6 +5,7 @@ namespace AndreasElia\Analytics\Tests\Feature;
 use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DashboardTest extends TestCase
 {
@@ -36,7 +37,8 @@ class DashboardTest extends TestCase
         });
     }
 
-    public function test_it_can_get_data_from_today()
+    #[Test]
+    public function it_can_get_data_from_today()
     {
         $this->get('analytics')
             ->assertViewHas('period', 'today')
@@ -52,7 +54,8 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    public function test_it_can_get_data_from_yesterday()
+    #[Test]
+    public function it_can_get_data_from_yesterday()
     {
         $this->get(route('analytics', ['period' => 'yesterday']))
             ->assertViewHas('period', 'yesterday')
@@ -68,7 +71,8 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    public function test_it_can_get_data_for_1_week()
+    #[Test]
+    public function it_can_get_data_for_1_week()
     {
         $this->get(route('analytics', ['period' => '1_week']))
             ->assertViewHas('period', '1_week')
@@ -84,7 +88,8 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    public function test_it_can_get_data_for_30_days()
+    #[Test]
+    public function it_can_get_data_for_30_days()
     {
         $this->get(route('analytics', ['period' => '30_days']))
             ->assertViewHas('period', '30_days')
@@ -100,7 +105,8 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    public function test_it_can_get_data_for_30_days_filtered_by_uri()
+    #[Test]
+    public function it_can_get_data_for_30_days_filtered_by_uri()
     {
         $this->get(route('analytics', [
             'period' => '30_days',
@@ -120,7 +126,8 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    public function test_it_can_view_sources()
+    #[Test]
+    public function it_can_view_sources()
     {
         $this->get(route('analytics', [
             'period' => '30_days',
@@ -131,7 +138,8 @@ class DashboardTest extends TestCase
             ->assertSee('<a href="https://example.com" target="_blank" class="hover:underline">', $escaped = false);
     }
 
-    public function test_it_wont_show_sources_if_ignored()
+    #[Test]
+    public function it_wont_show_sources_if_ignored()
     {
         config()->set('analytics.ignoredColumns', ['source']);
         $this->get(route('analytics', [

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 
 class AnalyticsTest extends TestCase
 {
@@ -21,7 +22,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_a_page_view_can_be_tracked()
+    #[Test]
+    public function a_page_view_can_be_tracked()
     {
         $request = Request::create('/test', 'GET');
         $request->setLaravelSession($this->app['session']->driver());
@@ -38,7 +40,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_page_views_arent_tracked_when_not_enabled()
+    #[Test]
+    public function page_views_arent_tracked_when_not_enabled()
     {
         Config::set('analytics.enabled', false);
         $request = Request::create('/page');
@@ -52,7 +55,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_a_page_view_can_be_masked()
+    #[Test]
+    public function a_page_view_can_be_masked()
     {
         $request = Request::create('/test/123', 'GET');
         $request->setLaravelSession($this->app['session']->driver());
@@ -69,7 +73,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_a_page_view_can_be_excluded()
+    #[Test]
+    public function a_page_view_can_be_excluded()
     {
         $request = Request::create('/analytics/123', 'GET');
         $request->setLaravelSession($this->app['session']->driver());
@@ -82,7 +87,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_methods_can_be_excluded()
+    #[Test]
+    public function methods_can_be_excluded()
     {
         Config::set('analytics.ignoreMethods', ['POST']);
         $request = Request::create('/users', 'POST');
@@ -96,7 +102,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_a_page_view_from_robot_can_be_tracked_if_enabled()
+    #[Test]
+    public function a_page_view_from_robot_can_be_tracked_if_enabled()
     {
         Config::set('analytics.ignoreRobots', false);
 
@@ -116,7 +123,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_a_page_view_from_robot_is_not_tracked_if_enabled()
+    #[Test]
+    public function a_page_view_from_robot_is_not_tracked_if_enabled()
     {
         Config::set('analytics.ignoreRobots', true);
 
@@ -135,7 +143,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_a_page_view_from_an_excluded_ip_is_not_tracked_if_enabled()
+    #[Test]
+    public function a_page_view_from_an_excluded_ip_is_not_tracked_if_enabled()
     {
         Config::set('analytics.ignoredIPs', ['127.0.0.2']);
 
@@ -153,7 +162,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_utm_details_can_be_saved_with_page_views()
+    #[Test]
+    public function utm_details_can_be_saved_with_page_views()
     {
         $request = Request::create('/test', 'GET', [
             'utm_source' => 'test-source',
@@ -181,7 +191,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_utm_details_will_be_trimmed()
+    #[Test]
+    public function utm_details_will_be_trimmed()
     {
         $string = Str::random(300);
         $request = Request::create('/test', 'GET', [
@@ -206,7 +217,8 @@ class AnalyticsTest extends TestCase
         ]);
     }
 
-    public function test_it_can_ignore_some_columns_when_saving()
+    #[Test]
+    public function it_can_ignore_some_columns_when_saving()
     {
         $request = Request::create('/test', 'GET', [
             'utm_source' => 'test-source',
