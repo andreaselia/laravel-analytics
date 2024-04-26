@@ -128,7 +128,7 @@ class HomeController extends Controller
         ];
 
         return collect($utm)
-            ->filter(fn (string $column) => !in_array($column, config('analytics.ignoredColumns', [])))
+            ->filter(fn (string $column) => ! in_array($column, config('analytics.ignoredColumns', [])))
             ->mapWithKeys(fn (string $key) => [$key => [
                 'key' => $key,
                 'items' => PageView::query()
