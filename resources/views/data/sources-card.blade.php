@@ -1,3 +1,4 @@
+@unless(in_array('source', config('analytics.ignoredColumns', [])))
 <div class="shadow-sm bg-white rounded-lg overflow-hidden">
     <div class="px-4 sm:px-6 py-5">
         <h3 class="text-lg font-medium leading-6 text-gray-900">Sources</h3>
@@ -27,3 +28,4 @@
         @endforelse
     </div>
 </div>
+@endunless

@@ -80,6 +80,10 @@ class HomeController extends Controller
 
     protected function sources(): Collection
     {
+        if (in_array('source', config('analytics.ignoredColumns', []))) {
+            return collect();
+        }
+
         return PageView::query()
             ->scopes($this->scopes)
             ->select('source as page', DB::raw('count(*) as users'))
@@ -101,6 +105,10 @@ class HomeController extends Controller
 
     protected function devices(): Collection
     {
+        if (in_array('device', config('analytics.ignoredColumns', []))) {
+            return collect();
+        }
+
         return PageView::query()
             ->scopes($this->scopes)
             ->select('device as type', DB::raw('count(*) as users'))
@@ -111,25 +119,30 @@ class HomeController extends Controller
 
     protected function utm(): Collection
     {
-        return collect([
+        $utm = [
             'utm_source',
             'utm_medium',
             'utm_campaign',
             'utm_term',
             'utm_content',
-        ])->mapWithKeys(fn (string $key) => [$key => [
-            'key' => $key,
-            'items' => PageView::query()
-                ->select([$key, DB::raw('count(*) as count')])
-                ->scopes($this->scopes)
-                ->whereNotNull($key)
-                ->groupBy($key)
-                ->orderBy('count', 'desc')
-                ->get()
-                ->map(fn ($item) => [
-                    'value' => $item->{$key},
-                    'count' => $item->count,
-                ]),
-        ]])->filter(fn (array $set) => $set['items']->count() > 0);
+        ];
+
+        return collect($utm)
+            ->filter(fn (string $column) => ! in_array($column, config('analytics.ignoredColumns', [])))
+            ->mapWithKeys(fn (string $key) => [$key => [
+                'key' => $key,
+                'items' => PageView::query()
+                    ->select([$key, DB::raw('count(*) as count')])
+                    ->scopes($this->scopes)
+                    ->whereNotNull($key)
+                    ->groupBy($key)
+                    ->orderBy('count', 'desc')
+                    ->get()
+                    ->map(fn ($item) => [
+                        'value' => $item->{$key},
+                        'count' => $item->count,
+                    ]),
+            ]])
+            ->filter(fn (array $set) => $set['items']->count() > 0);
     }
 }

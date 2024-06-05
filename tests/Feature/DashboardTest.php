@@ -5,6 +5,7 @@ namespace AndreasElia\Analytics\Tests\Feature;
 use AndreasElia\Analytics\Database\Factories\PageViewFactory;
 use AndreasElia\Analytics\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DashboardTest extends TestCase
 {
@@ -36,7 +37,7 @@ class DashboardTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_from_today()
     {
         $this->get('analytics')
@@ -53,7 +54,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_from_yesterday()
     {
         $this->get(route('analytics', ['period' => 'yesterday']))
@@ -70,7 +71,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_for_1_week()
     {
         $this->get(route('analytics', ['period' => '1_week']))
@@ -87,7 +88,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_for_30_days()
     {
         $this->get(route('analytics', ['period' => '30_days']))
@@ -104,7 +105,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_get_data_for_30_days_filtered_by_uri()
     {
         $this->get(route('analytics', [
@@ -125,7 +126,7 @@ class DashboardTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_view_sources()
     {
         $this->get(route('analytics', [
@@ -133,6 +134,19 @@ class DashboardTest extends TestCase
             'uri' => '/test1',
         ]))
             ->assertSeeText('example.com')
+            ->assertSee('<h3 class="text-lg font-medium leading-6 text-gray-900">Sources</h3>', false)
             ->assertSee('<a href="https://example.com" target="_blank" class="hover:underline">', $escaped = false);
+    }
+
+    #[Test]
+    public function it_wont_show_sources_if_ignored()
+    {
+        config()->set('analytics.ignoredColumns', ['source']);
+        $this->get(route('analytics', [
+            'period' => '30_days',
+            'uri' => '/test1',
+        ]))
+            ->assertViewHas('sources', collect())
+            ->assertDontSee('<h3 class="text-lg font-medium leading-6 text-gray-900">Sources</h3>', false);
     }
 }
