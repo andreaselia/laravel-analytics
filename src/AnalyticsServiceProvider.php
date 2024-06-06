@@ -8,11 +8,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AnalyticsServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any package services.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
@@ -51,11 +46,6 @@ class AnalyticsServiceProvider extends ServiceProvider
         ];
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(
