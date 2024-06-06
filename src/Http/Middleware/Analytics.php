@@ -2,13 +2,13 @@
 
 namespace AndreasElia\Analytics\Http\Middleware;
 
+use AndreasElia\Analytics\Agent;
 use AndreasElia\Analytics\Contracts\SessionProvider;
 use AndreasElia\Analytics\Models\PageView;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
-use Jenssegers\Agent\Agent;
 
 class Analytics
 {
