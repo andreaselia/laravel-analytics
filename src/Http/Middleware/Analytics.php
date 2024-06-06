@@ -29,7 +29,9 @@ class Analytics
         }
 
         $agent = new Agent();
-        $agent->setUserAgent($request->headers->get('user-agent'));
+        if ($userAgent = $request->headers->get('user-agent')) {
+            $agent->setUserAgent($userAgent);
+        }
         $agent->setHttpHeaders($request->headers);
 
         if (config('analytics.ignoreRobots', false) && $agent->isRobot()) {
