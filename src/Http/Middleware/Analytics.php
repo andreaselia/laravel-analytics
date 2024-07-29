@@ -28,6 +28,16 @@ class Analytics
             return $response;
         }
 
+        foreach (config('analytics.exclude', []) as $except) {
+            if ($except !== '/') {
+                $except = trim($except, '/');
+            }
+
+            if ($request->fullUrlIs($except) || $request->is($except)) {
+                return $response;
+            }
+        }
+
         $agent = new Agent();
         if ($userAgent = $request->headers->get('user-agent')) {
             $agent->setUserAgent($userAgent);
@@ -46,16 +56,6 @@ class Analytics
             if ($request->fullUrlIs($mask) || $request->is($mask)) {
                 $uri = '/'.str_replace('*', '∗︎', $mask);
                 break;
-            }
-        }
-
-        foreach (config('analytics.exclude', []) as $except) {
-            if ($except !== '/') {
-                $except = trim($except, '/');
-            }
-
-            if ($request->fullUrlIs($except) || $request->is($except)) {
-                return $response;
             }
         }
 
