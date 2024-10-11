@@ -31,6 +31,6 @@ class CreatePageViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page_views');
+        Schema::connection(config('analytics.db_connection'))->dropIfExists('page_views');
     }
 }
