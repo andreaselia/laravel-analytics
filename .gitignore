@@ -4,4 +4,4 @@ composer.lock
 .phpunit.result.cache
 .phpunit.cache/test-results
 /.idea
- .DS_Store
+.DS_Store
