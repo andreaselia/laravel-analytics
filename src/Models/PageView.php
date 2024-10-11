@@ -24,7 +24,14 @@ class PageView extends Model
         'utm_content',
     ];
 
+    protected $connection = '';
+
     protected static Closure $timezoneResolver;
+
+    public function __construct(array $attributes = []){
+        parent::__construct($attributes);
+        $this->connection=config('analytics.db_connection');
+    }
 
     public static function resolveTimezoneUsing(Closure $callback): void
     {
@@ -68,7 +75,7 @@ class PageView extends Model
 
     public function scopeUri($query, $uri = null)
     {
-        $query->when($uri, function ($query, string $uri) {
+        $query->when($uri, function ($query, string $uri): void {
             $query->where('uri', $uri);
         });
     }

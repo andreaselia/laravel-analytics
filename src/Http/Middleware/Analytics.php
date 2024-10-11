@@ -79,7 +79,7 @@ class Analytics
             ),
         ];
 
-        PageView::create(Arr::except($attributes, config('analytics.ignoredColumns', [])));
+        $this->getPageViewModel()::create(Arr::except($attributes, config('analytics.ignoredColumns', [])));
 
         return $response;
     }
@@ -88,7 +88,7 @@ class Analytics
     {
         $files = $request->files->all();
 
-        array_walk_recursive($files, function (&$file) {
+        array_walk_recursive($files, function (&$file): void {
             $file = [
                 'name' => $file->getClientOriginalName(),
                 'size' => $file->isFile() ? ($file->getSize() / 1000).'KB' : '0',
@@ -101,5 +101,9 @@ class Analytics
     private function getSessionProvider(): SessionProvider
     {
         return App::make(config('analytics.session.provider'));
+    }
+    private function getPageViewModel(): SessionProvider
+    {
+        return config('analytics.model');
     }
 }

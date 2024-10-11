@@ -3,6 +3,7 @@
 return [
 
     'enabled' => env('ANALYTICS_ENABLED', true),
+    'db_connection' => env('ANALYTICS_DB_CONNECTION', 'analytics_connection'),
 
     /**
      * Analytics Dashboard.
@@ -78,5 +79,8 @@ return [
     'session' => [
         'provider' => \AndreasElia\Analytics\RequestSessionProvider::class,
     ],
+
+    'model' =>  \AndreasElia\Analytics\Models\PageView::class,
+
 
 ];

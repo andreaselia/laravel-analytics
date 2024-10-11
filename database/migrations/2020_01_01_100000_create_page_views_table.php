@@ -13,7 +13,7 @@ class CreatePageViewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('page_views', function (Blueprint $table) {
+        Schema::connection(config('analytics.db_connection'))->create('page_views', function (Blueprint $table) {
             $table->id();
             $table->string('uri');
             $table->string('source')->nullable();
