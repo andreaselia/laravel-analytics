@@ -1,6 +1,6 @@
 # Laravel Analytics
 
-[![Latest Stable Version](https://poser.pugx.org/andreaselia/analytics/v)](//packagist.org/packages/andreaselia/analytics)
+[![Latest Stable Version](https://poser.pugx.org/donaldblessing/analytics/v)](//packagist.org/packages/donaldblessing/analytics)
 
 Easily collect page view analytics with a beautifully simple to use dashboard.
 
@@ -11,7 +11,7 @@ Easily collect page view analytics with a beautifully simple to use dashboard.
 Install the package:
 
 ```bash
-composer require andreaselia/analytics
+composer require donaldblessing/analytics
 ```
 
 Publish the config file and assets:

@@ -3,7 +3,7 @@
 return [
 
     'enabled' => env('ANALYTICS_ENABLED', true),
-    'db_connection' => env('ANALYTICS_DB_CONNECTION', 'analytics_connection'),
+    'db_connection' => env('ANALYTICS_DB_CONNECTION', env('DB_CONNECTION')),
 
     /**
      * Analytics Dashboard.
