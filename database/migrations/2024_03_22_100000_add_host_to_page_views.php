@@ -13,7 +13,7 @@ class AddHostToPageViews extends Migration
      */
     public function up()
     {
-        Schema::table('page_views', function (Blueprint $table) {
+        Schema::connection(config('analytics.db_connection'))->table('page_views', function (Blueprint $table) {
             $table->string('host')->nullable()->after('device');
         });
     }
