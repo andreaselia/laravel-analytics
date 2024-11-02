@@ -43,6 +43,7 @@ class AnalyticsServiceProvider extends ServiceProvider
             'namespace' => 'AndreasElia\Analytics\Http\Controllers',
             'prefix' => config('analytics.prefix'),
             'middleware' => config('analytics.middleware'),
+            'domain' => config('analytics.domain'),
         ];
     }
 
