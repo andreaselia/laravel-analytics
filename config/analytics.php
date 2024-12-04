@@ -11,6 +11,13 @@ return [
      */
     'prefix' => 'analytics',
 
+    /**
+     * Domain.
+     *
+     * The domain (optional) for the analytics dashboard.
+     */
+    'domain' => null,
+
     'middleware' => [
         'web',
     ],
