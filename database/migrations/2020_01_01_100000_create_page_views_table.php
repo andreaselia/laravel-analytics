@@ -13,7 +13,7 @@ class CreatePageViewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('page_views', function (Blueprint $table) {
+        Schema::create('analytics_page_views', function (Blueprint $table) {
             $table->id();
             $table->string('uri');
             $table->string('source')->nullable();
@@ -31,6 +31,6 @@ class CreatePageViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page_views');
+        Schema::dropIfExists('analytics_page_views');
     }
 }

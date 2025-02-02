@@ -13,7 +13,7 @@ class ChangePageViewColumnsToNullable extends Migration
      */
     public function up()
     {
-        Schema::table('page_views', function (Blueprint $table) {
+        Schema::table('analytics_page_views', function (Blueprint $table) {
             $table->string('country')->nullable()->change();
             $table->string('device')->nullable()->change();
         });

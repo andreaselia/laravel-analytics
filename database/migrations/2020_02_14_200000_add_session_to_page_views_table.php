@@ -13,7 +13,7 @@ class AddSessionToPageViewsTable extends Migration
      */
     public function up()
     {
-        Schema::table('page_views', function (Blueprint $table) {
+        Schema::table('analytics_page_views', function (Blueprint $table) {
             $table->string('session')->nullable()->after('uri');
         });
     }
@@ -25,7 +25,7 @@ class AddSessionToPageViewsTable extends Migration
      */
     public function down()
     {
-        Schema::table('page_views', function (Blueprint $table) {
+        Schema::table('analytics_page_views', function (Blueprint $table) {
             $table->dropColumn('session');
         });
     }
