@@ -1,6 +1,6 @@
 # Laravel Analytics
 
-[![Latest Stable Version](https://poser.pugx.org/andreaselia/analytics/v)](//packagist.org/packages/andreaselia/analytics)
+[![Latest Stable Version](https://poser.pugx.org/felipemateus/laravel-analytics/v)](//packagist.org/packages/felipemateus/laravel-analytics)
 
 Easily collect page view analytics with a beautifully simple to use dashboard.
 
@@ -11,7 +11,7 @@ Easily collect page view analytics with a beautifully simple to use dashboard.
 Install the package:
 
 ```bash
-composer require andreaselia/analytics
+composer require felipemateus/laravel-analytics
 ```
 
 Publish the config file and assets:
@@ -65,7 +65,7 @@ You can ignore requests from specific IP addresses by adding them to the `ignore
 
 ### Masking routes
 
-You can mask certain routes from being tracked by adding them to the `mask` array in the `analytics.php` config file. 
+You can mask certain routes from being tracked by adding them to the `mask` array in the `analytics.php` config file.
 This is useful if you want to track the same route with different parameters, e.g. `/users/1` and `/users/2` will be tracked as `/users/∗︎`.
 
 ### Ignoring certain HTTP verbs/methods
@@ -82,7 +82,7 @@ You can ignore the tracking of some methods by adding them to the `analytics.ign
 
 By default, `session_id` in the `page_views` table is filled with the session ID of the current request. However, in certain scenarios (for example, for API and other requests not using cookies), the session is unavailable.
 
-In these cases, you can create a custom session ID provider: create a class that implements the `AndreasElia\Analytics\Contracts\SessionProvider` interface and set its name as the `provider` option in the `analytics.php` config file. The configured class object is resolved from the container, therefore, dependency injection can be used via the `__constructor`. 
+In these cases, you can create a custom session ID provider: create a class that implements the `AndreasElia\Analytics\Contracts\SessionProvider` interface and set its name as the `provider` option in the `analytics.php` config file. The configured class object is resolved from the container, therefore, dependency injection can be used via the `__constructor`.
 
 One example of a custom way to generate the session ID in cookie-less environment is to hash IP address + User Agent + some other headers from the request.
 

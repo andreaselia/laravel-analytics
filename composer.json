@@ -1,5 +1,5 @@
 {
-    "name": "andreaselia/analytics",
+    "name": "felipemateus/laravel-analytics",
     "description": "Analytics for the Laravel framework.",
     "keywords": ["laravel", "analytics", "middleware", "package"],
     "license": "MIT",
