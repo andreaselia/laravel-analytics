@@ -20,6 +20,10 @@ class Analytics
             return $response;
         }
 
+        if (! $request->hasSession()) {
+            return $response;
+        }
+
         if (in_array($request->method(), config('analytics.ignoreMethods', []))) {
             return $response;
         }
