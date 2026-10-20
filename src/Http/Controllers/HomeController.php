@@ -22,6 +22,10 @@ class HomeController extends Controller
             $period = 'today';
         }
 
+        if (! is_string($uri)) {
+            $uri = null;
+        }
+
         $this->scopes = [
             'filter' => [$period],
             'uri' => [$uri],

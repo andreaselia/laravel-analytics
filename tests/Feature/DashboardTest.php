@@ -172,6 +172,24 @@ class DashboardTest extends TestCase
     }
 
     #[Test]
+    public function it_ignores_an_invalid_uri_filter()
+    {
+        $this->get(route('analytics', ['uri' => ['/test']]))
+            ->assertOk()
+            ->assertViewHas('uri', null)
+            ->assertViewHas('stats', [
+                [
+                    'key' => 'Unique Users',
+                    'value' => 1,
+                ],
+                [
+                    'key' => 'Page Views',
+                    'value' => 2,
+                ],
+            ]);
+    }
+
+    #[Test]
     public function it_can_view_sources()
     {
         $this->get(route('analytics', [
