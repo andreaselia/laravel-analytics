@@ -18,6 +18,10 @@ class HomeController extends Controller
         $period = $request->input('period', 'today');
         $uri = $request->input('uri');
 
+        if (! is_string($period) || ! array_key_exists($period, $this->periods())) {
+            $period = 'today';
+        }
+
         $this->scopes = [
             'filter' => [$period],
             'uri' => [$uri],
@@ -55,6 +59,7 @@ class HomeController extends Controller
                 'key' => 'Unique Users',
                 'value' => PageView::query()
                     ->scopes($this->scopes)
+                    ->whereNotNull('session')
                     ->groupBy('session')
                     ->pluck('session')
                     ->count(),

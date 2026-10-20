@@ -7,8 +7,12 @@ use Illuminate\Http\Request;
 
 class RequestSessionProvider implements SessionProvider
 {
-    public function get(Request $request): string
+    public function get(Request $request): ?string
     {
-        return $request->session()->getId();
+        if (! $request->hasSession()) {
+            return null;
+        }
+
+        return hash('sha256', $request->session()->getId());
     }
 }

@@ -5,10 +5,15 @@ namespace AndreasElia\Analytics\Tests\Feature;
 use AndreasElia\Analytics\Http\Middleware\Analytics;
 use AndreasElia\Analytics\Models\PageView;
 use AndreasElia\Analytics\Tests\TestCase;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 
 class AnalyticsTest extends TestCase
@@ -251,5 +256,111 @@ class AnalyticsTest extends TestCase
             'utm_term' => null,
             'utm_content' => 'test-content',
         ]);
+    }
+
+    #[Test]
+    public function non_string_utm_details_are_ignored()
+    {
+        $request = Request::create('/test', 'GET', [
+            'utm_source' => ['test-source', 'other-source'],
+            'utm_medium' => 'test-medium',
+        ]);
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, fn ($req) => null);
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'utm_source' => null,
+            'utm_medium' => 'test-medium',
+        ]);
+    }
+
+    #[Test]
+    public function the_accept_language_header_from_the_request_is_used()
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'fr-FR';
+
+        try {
+            $request = Request::create('/test', 'GET', [], [], [], ['HTTP_ACCEPT_LANGUAGE' => 'de-DE,de;q=0.9']);
+            $request->setLaravelSession($this->app['session']->driver());
+
+            (new Analytics())->handle($request, fn ($req) => null);
+        } finally {
+            unset($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        }
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'country' => 'Germany',
+        ]);
+    }
+
+    #[Test]
+    public function the_session_id_is_stored_hashed()
+    {
+        $session = $this->app['session']->driver();
+        $request = Request::create('/test', 'GET');
+        $request->setLaravelSession($session);
+
+        (new Analytics())->handle($request, fn ($req) => null);
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'session' => hash('sha256', $session->getId()),
+        ]);
+        $this->assertDatabaseMissing('page_views', [
+            'session' => $session->getId(),
+        ]);
+    }
+
+    #[Test]
+    public function a_page_view_without_a_session_is_tracked_without_one()
+    {
+        $request = Request::create('/test', 'GET');
+
+        (new Analytics())->handle($request, fn ($req) => null);
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'session' => null,
+        ]);
+    }
+
+    #[Test]
+    public function an_unknown_browser_is_stored_as_null()
+    {
+        $request = Request::create('/test', 'GET');
+        $request->headers->set('User-Agent', 'curl/8.0');
+        $request->setLaravelSession($this->app['session']->driver());
+
+        (new Analytics())->handle($request, fn ($req) => null);
+
+        $this->assertCount(1, PageView::all());
+        $this->assertDatabaseHas('page_views', [
+            'uri' => '/test',
+            'browser' => null,
+        ]);
+    }
+
+    #[Test]
+    public function a_tracking_failure_does_not_break_the_response()
+    {
+        $this->mock(ExceptionHandler::class)
+            ->shouldReceive('report')
+            ->once()
+            ->with(Mockery::type(QueryException::class));
+
+        Schema::drop('page_views');
+
+        $request = Request::create('/test', 'GET');
+        $request->setLaravelSession($this->app['session']->driver());
+        $response = new Response('ok');
+
+        $this->assertSame($response, (new Analytics())->handle($request, fn ($req) => $response));
     }
 }

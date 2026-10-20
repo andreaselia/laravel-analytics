@@ -6,5 +6,5 @@ use Illuminate\Http\Request;
 
 interface SessionProvider
 {
-    public function get(Request $request): string;
+    public function get(Request $request): ?string;
 }

@@ -9,6 +9,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
+use Throwable;
 
 class Analytics
 {
@@ -16,16 +17,27 @@ class Analytics
     {
         $response = $next($request);
 
+        try {
+            $this->track($request);
+        } catch (Throwable $e) {
+            report($e);
+        }
+
+        return $response;
+    }
+
+    protected function track(Request $request): void
+    {
         if (! config('analytics.enabled')) {
-            return $response;
+            return;
         }
 
         if (in_array($request->method(), config('analytics.ignoreMethods', []))) {
-            return $response;
+            return;
         }
 
         if (in_array($request->ip(), config('analytics.ignoredIPs', []))) {
-            return $response;
+            return;
         }
 
         foreach (config('analytics.exclude', []) as $except) {
@@ -34,7 +46,7 @@ class Analytics
             }
 
             if ($request->fullUrlIs($except) || $request->is($except)) {
-                return $response;
+                return;
             }
         }
 
@@ -42,10 +54,10 @@ class Analytics
         if ($userAgent = $request->headers->get('user-agent')) {
             $agent->setUserAgent($userAgent);
         }
-        $agent->setHttpHeaders($request->headers);
+        $agent->setHttpHeaders($request->server->all());
 
         if (config('analytics.ignoreRobots', false) && $agent->isRobot()) {
-            return $response;
+            return;
         }
 
         $uri = str_replace($request->root(), '', $request->url()) ?: '/';
@@ -64,38 +76,22 @@ class Analytics
             'uri' => $uri,
             'source' => $request->headers->get('referer'),
             'country' => $agent->languages()[0] ?? 'en-en',
-            'browser' => $agent->browser() ?? null,
+            'browser' => $agent->browser() ?: null,
             'device' => $agent->deviceType(),
             'host' => $request->getHost(),
             ...array_map(
                 fn ($item) => substr($item, 0, 255),
-                $request->only([
+                array_filter($request->only([
                     'utm_source',
                     'utm_medium',
                     'utm_campaign',
                     'utm_term',
                     'utm_content',
-                ])
+                ]), 'is_string')
             ),
         ];
 
         PageView::create(Arr::except($attributes, config('analytics.ignoredColumns', [])));
-
-        return $response;
-    }
-
-    protected function input(Request $request): array
-    {
-        $files = $request->files->all();
-
-        array_walk_recursive($files, function (&$file) {
-            $file = [
-                'name' => $file->getClientOriginalName(),
-                'size' => $file->isFile() ? ($file->getSize() / 1000).'KB' : '0',
-            ];
-        });
-
-        return array_replace_recursive($request->input(), $files);
     }
 
     private function getSessionProvider(): SessionProvider
