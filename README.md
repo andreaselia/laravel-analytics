@@ -45,7 +45,36 @@ protected $middleware = [
 ];
 ```
 
+On Laravel 11 and later, register it in `bootstrap/app.php` instead, e.g. on the `web` middleware group:
+
+```php
+// bootstrap/app.php
+
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->web(append: [
+        \AndreasElia\Analytics\Http\Middleware\Analytics::class,
+    ]);
+})
+```
+
+Requests that run outside the `web` middleware group (e.g. API routes) have no session, so they are tracked without one unless you configure a custom session provider (see below).
+
 ## Configuration
+
+### Dashboard
+
+The dashboard is available at `/analytics` by default. You can change its URL with the `prefix` option, serve it on a specific (sub)domain with the `domain` option (e.g. `'analytics.example.com'`), and set the route middleware with the `middleware` option. If you change the `prefix`, update the `exclude` option too so that dashboard visits aren't tracked.
+
+> [!WARNING]
+> The dashboard is public by default. The default `middleware` is only `['web']`, so anyone who knows the URL can see your analytics. Protect it by adding authentication (and optionally authorization) middleware in the `analytics.php` config file:
+>
+> ```php
+> 'middleware' => [
+>     'web',
+>     'auth',
+>     // 'can:viewAnalytics', // with Gate::define('viewAnalytics', fn ($user) => ...)
+> ],
+> ```
 
 ### Disabling tracking
 
@@ -61,7 +90,7 @@ You can ignore requests from robots by setting the `ignoreRobots` property in th
 
 ### Ignore specific IP addresses
 
-You can ignore requests from specific IP addresses by adding them to the `ignoreIps` array in the `analytics.php` config file.
+You can ignore requests from specific IP addresses by adding them to the `ignoredIPs` array in the `analytics.php` config file.
 
 ### Masking routes
 
@@ -78,9 +107,20 @@ You can ignore the tracking of some methods by adding them to the `analytics.ign
 ],
 ```
 
-### Changing how session_id is determined
+### Ignoring columns
 
-By default, `session_id` in the `page_views` table is filled with the session ID of the current request. However, in certain scenarios (for example, for API and other requests not using cookies), the session is unavailable.
+You can stop certain details from being stored by adding their column names to the `ignoredColumns` array in the `analytics.php` config file. The available columns are `source`, `country`, `browser`, `device`, `host`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_term` and `utm_content`. Ignored columns are saved as `null`.
+
+```php
+'ignoredColumns' => [
+    'source',
+    'host',
+],
+```
+
+### Changing how the session is determined
+
+By default, `session` in the `page_views` table is filled with a SHA-256 hash of the session ID of the current request. However, in certain scenarios (for example, for API and other requests not using cookies), the session is unavailable, and the page view is stored with a `null` session.
 
 In these cases, you can create a custom session ID provider: create a class that implements the `AndreasElia\Analytics\Contracts\SessionProvider` interface and set its name as the `provider` option in the `analytics.php` config file. The configured class object is resolved from the container, therefore, dependency injection can be used via the `__constructor`. 
 

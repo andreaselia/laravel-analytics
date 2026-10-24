@@ -127,6 +127,69 @@ class DashboardTest extends TestCase
     }
 
     #[Test]
+    public function page_views_without_a_session_are_not_counted_as_unique_users()
+    {
+        PageViewFactory::new()->count(2)->create([
+            'session' => null,
+        ]);
+
+        $this->get('analytics')
+            ->assertViewHas('stats', [
+                [
+                    'key' => 'Unique Users',
+                    'value' => 1,
+                ],
+                [
+                    'key' => 'Page Views',
+                    'value' => 4,
+                ],
+            ]);
+    }
+
+    #[Test]
+    public function it_falls_back_to_today_for_an_invalid_period()
+    {
+        $today = [
+            [
+                'key' => 'Unique Users',
+                'value' => 1,
+            ],
+            [
+                'key' => 'Page Views',
+                'value' => 2,
+            ],
+        ];
+
+        $this->get(route('analytics', ['period' => 'foo']))
+            ->assertOk()
+            ->assertViewHas('period', 'today')
+            ->assertViewHas('stats', $today);
+
+        $this->get(route('analytics', ['period' => ['1_week']]))
+            ->assertOk()
+            ->assertViewHas('period', 'today')
+            ->assertViewHas('stats', $today);
+    }
+
+    #[Test]
+    public function it_ignores_an_invalid_uri_filter()
+    {
+        $this->get(route('analytics', ['uri' => ['/test']]))
+            ->assertOk()
+            ->assertViewHas('uri', null)
+            ->assertViewHas('stats', [
+                [
+                    'key' => 'Unique Users',
+                    'value' => 1,
+                ],
+                [
+                    'key' => 'Page Views',
+                    'value' => 2,
+                ],
+            ]);
+    }
+
+    #[Test]
     public function it_can_view_sources()
     {
         $this->get(route('analytics', [

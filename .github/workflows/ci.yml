@@ -2,14 +2,53 @@ name: CI
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   tests:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+        laravel: ['11', '12', '13']
+        include:
+          - laravel: '11'
+            testbench: '^9.0'
+          - laravel: '12'
+            testbench: '^10.0'
+          - laravel: '13'
+            testbench: '^11.0'
+        exclude:
+          - laravel: '13'
+            php: '8.2'
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: intl, pdo_sqlite
+          coverage: none
+
       - name: Install Dependencies
-        run: php /usr/bin/composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+        env:
+          # Every Laravel 11 release has an unpatched advisory, so Composer's
+          # security blocking would otherwise fall back to 11.x-dev.
+          COMPOSER_NO_SECURITY_BLOCKING: 1
+        run: |
+          composer require "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
+          composer update --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
       - name: Execute tests via PHPUnit
-        run: php vendor/bin/phpunit --stop-on-failure
+        run: vendor/bin/phpunit --stop-on-failure
